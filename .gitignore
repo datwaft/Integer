@@ -34,3 +34,5 @@
 # Visual Studio Folders
 .vs/
 src/.vs/
+Debug/
+x64/
