@@ -1,4 +1,4 @@
-// pair.h
+// sign.h
 // Autores: David Guevara & Mario Arguello
 // Descripción: una enumeración para el signo del Integer.
 
