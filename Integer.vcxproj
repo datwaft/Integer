@@ -123,10 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\basicinteger.cpp" />
     <ClCompile Include="test\default_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\basicinteger.h" />
     <ClInclude Include="src\integer.h" />
+    <ClInclude Include="src\pair.h" />
+    <ClInclude Include="src\sign.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

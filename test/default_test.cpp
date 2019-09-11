@@ -1,6 +1,6 @@
 // default_test.cpp
 // Autores: David Guevara & Mario Arguello
-// Descripción: Archivo de pruebas principal
+// Descripción: archivo de pruebas principal.
 
 #include <iostream>
 
