@@ -49,6 +49,36 @@ BasicInteger::BasicInteger(const long& data)
   }
 }
 
+void BasicInteger::operator=(const int& data)
+{
+  this->maximum_size_ = MaximumSize();
+  if (data == 0)
+  {
+    this->data_ = 0;
+    this->current_size_ = 1;
+  }
+  else
+  {
+    this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
+    this->current_size_ = static_cast<short>(log10(this->data_) + 1);
+  }
+}
+
+void BasicInteger::operator=(const long& data)
+{
+  this->maximum_size_ = MaximumSize();
+  if (data == 0)
+  {
+    this->data_ = 0;
+    this->current_size_ = 1;
+  }
+  else
+  {
+    this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
+    this->current_size_ = static_cast<short>(log10(this->data_) + 1);
+  }
+}
+
 BasicInteger::Base BasicInteger::getDigit(int digit) const
 {
   return (this->data_ / static_cast<Base>(pow(10, this->maximum_size_))) % 10;
@@ -123,7 +153,7 @@ Pair<BasicInteger, BasicInteger> BasicInteger::Multiplication(const BasicInteger
 
 BasicInteger BasicInteger::Division(const BasicInteger& other) const
 {
-  return BasicInteger();
+  return BasicInteger(this->data_ / other.data_);
 }
 
 BasicInteger::operator std::string()
