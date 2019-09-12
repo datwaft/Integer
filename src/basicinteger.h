@@ -19,9 +19,10 @@ class BasicInteger
 
   BasicInteger(const int& = 0);
   BasicInteger(const long&);
-
+  BasicInteger(const std::string&);
   void operator = (const int&);
   void operator = (const long&);
+  void operator = (const std::string&);
 
   Base getDigit(int) const;
   short getCurrentSize() const;
@@ -40,7 +41,6 @@ class BasicInteger
   BasicInteger Division(const BasicInteger&) const;
 
   operator std::string();
-  static BasicInteger Parse(std::string);
  private:
   static short MaximumSize();
 

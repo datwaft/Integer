@@ -4,6 +4,7 @@
 //              la clase Integer.
 
 #include "basicinteger.h"
+#include "arrayinteger.h"
 
 short BasicInteger::maximum_size_ = BasicInteger::MaximumSize();
 
@@ -49,6 +50,11 @@ BasicInteger::BasicInteger(const long& data)
   }
 }
 
+BasicInteger::BasicInteger(const std::string& data)
+{
+  *this = BasicInteger(std::stol(data));
+}
+
 void BasicInteger::operator=(const int& data)
 {
   this->maximum_size_ = MaximumSize();
@@ -79,9 +85,16 @@ void BasicInteger::operator=(const long& data)
   }
 }
 
-BasicInteger::Base BasicInteger::getDigit(int digit) const
+void BasicInteger::operator=(const std::string& data)
 {
-  return (this->data_ / static_cast<Base>(pow(10, this->maximum_size_))) % 10;
+  *this = BasicInteger(std::stol(data));
+}
+
+BasicInteger::Base BasicInteger::getDigit(int index) const
+{
+  if (index >= this->current_size_)
+    throw std::exception("Invalid index.");
+  return (this->data_ / static_cast<Base>(pow(10, index))) % 10;
 }
 
 short BasicInteger::getCurrentSize() const
@@ -165,9 +178,4 @@ BasicInteger BasicInteger::Division(const BasicInteger& other) const
 BasicInteger::operator std::string()
 {
   return std::to_string(this->data_);
-}
-
-BasicInteger BasicInteger::Parse(std::string string)
-{
-  return BasicInteger(std::stol(string));
 }

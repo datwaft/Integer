@@ -21,7 +21,7 @@
     <ClCompile Include="src\basicinteger.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\ArrayInteger.cpp">
+    <ClCompile Include="src\arrayinteger.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClInclude Include="src\sign.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\ArrayInteger.h">
+    <ClInclude Include="src\arrayinteger.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
