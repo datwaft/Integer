@@ -118,7 +118,13 @@ Pair<BasicInteger, BasicInteger> BasicInteger::Substraction(const BasicInteger& 
 
 Pair<BasicInteger, BasicInteger> BasicInteger::Multiplication(const BasicInteger& other) const
 {
-  return Pair<BasicInteger, BasicInteger>();
+	Pair<BasicInteger, BasicInteger> result;
+
+	long long calculation = static_cast<long long>(this->data_) * static_cast<long long>(other.data_);
+	result.one = static_cast<Base>(calculation % static_cast<long long>(pow(10,this->maximum_size_)));
+	result.two = static_cast<Base>(calculation >= pow(10, this->maximum_size_) ? (calculation / (pow(10, this->maximum_size_))) : 0);
+
+  return result;
 }
 
 BasicInteger BasicInteger::Division(const BasicInteger& other) const
