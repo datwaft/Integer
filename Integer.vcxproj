@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ArrayInteger.cpp" />
     <ClCompile Include="src\basicinteger.cpp" />
     <ClCompile Include="test\default_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ArrayInteger.h" />
     <ClInclude Include="src\basicinteger.h" />
     <ClInclude Include="src\integer.h" />
     <ClInclude Include="src\pair.h" />
