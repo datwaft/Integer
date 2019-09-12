@@ -17,7 +17,6 @@ class ArrayInteger
   void operator = (const std::string&);
   ~ArrayInteger();
 
-  BasicInteger::Base getDigit(int) const;
   short getCurrentSize() const;
   static short getMaximumSize();
 

@@ -89,14 +89,6 @@ ArrayInteger::~ArrayInteger()
   delete[] this->data_;
 }
 
-BasicInteger::Base ArrayInteger::getDigit(int index) const
-{
-  if (index >= BasicInteger::getMaximumSize() * this->getCurrentSize())
-    throw std::exception("Invalid index");
-  return this->data_[index / BasicInteger::getMaximumSize()].getDigit(index % BasicInteger::getMaximumSize());
-  // Posiblemente pocho.
-}
-
 short ArrayInteger::getCurrentSize() const
 {
   return this->current_size_;

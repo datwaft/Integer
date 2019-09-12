@@ -90,13 +90,6 @@ void BasicInteger::operator=(const std::string& data)
   *this = BasicInteger(std::stol(data));
 }
 
-BasicInteger::Base BasicInteger::getDigit(int index) const
-{
-  if (index >= this->current_size_)
-    throw std::exception("Invalid index.");
-  return (this->data_ / static_cast<Base>(pow(10, index))) % 10;
-}
-
 short BasicInteger::getCurrentSize() const
 {
   return this->current_size_;

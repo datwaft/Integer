@@ -24,7 +24,6 @@ class BasicInteger
   void operator = (const long&);
   void operator = (const std::string&);
 
-  Base getDigit(int) const;
   short getCurrentSize() const;
   static short getMaximumSize();
 
