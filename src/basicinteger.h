@@ -20,6 +20,9 @@ class BasicInteger
   BasicInteger(const int& = 0);
   BasicInteger(const long&);
 
+  void operator = (const int&);
+  void operator = (const long&);
+
   Base getDigit(int) const;
   short getCurrentSize() const;
   static short getMaximumSize();
