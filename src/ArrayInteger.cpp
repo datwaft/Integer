@@ -100,12 +100,17 @@ short ArrayInteger::getMaximumSize()
 
 bool ArrayInteger::operator==(const ArrayInteger& other) const
 {
-  return false;
+  if (current_size_ != other.current_size_)
+    return false;
+  for(short i = 0; i < current_size_; i++)
+    if(data_[i] != other.data_[i])
+      return false;
+  return true;
 }
 
 bool ArrayInteger::operator!=(const ArrayInteger& other) const
 {
-  return false;
+  return !(*this == other);
 }
 
 bool ArrayInteger::operator>(const ArrayInteger& other) const
