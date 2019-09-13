@@ -24,6 +24,12 @@ ArrayInteger::ArrayInteger(const std::string& data)
   this->setInteger(data);
 }
 
+ArrayInteger::ArrayInteger(const BasicInteger& data)
+{
+  this->data_ = new BasicInteger[this->maximum_size_];
+  this->setInteger(data);
+}
+
 void ArrayInteger::operator=(const int& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
@@ -37,6 +43,12 @@ void ArrayInteger::operator=(const long& data)
 }
 
 void ArrayInteger::operator=(const std::string& data)
+{
+  this->data_ = new BasicInteger[this->maximum_size_];
+  this->setInteger(data);
+}
+
+void ArrayInteger::operator=(const BasicInteger& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
   this->setInteger(data);
@@ -86,6 +98,12 @@ void ArrayInteger::setInteger(const std::string& string)
       aux.clear();
     }
   }
+}
+
+void ArrayInteger::setInteger(const BasicInteger& data)
+{
+  current_size_ = 1;
+  data_[0] = data;
 }
 
 short ArrayInteger::getCurrentSize() const
@@ -176,7 +194,18 @@ ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* car
 
 ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  // TODO
+  short current_size = (current_size_ >= other.current_size_ ? current_size_ : other.current_size_);
+  ArrayInteger result;
+  BasicInteger operation_carriage = 0;
+  
+  short i;
+  for (i = 0; i < current_size; ++i)
+  {
+    data_[i].Substraction(operation_carriage).Substraction(other.data_[i], &operation_carriage);
+  }
+  (*carriage) = operation_carriage;
+
+  return result;
 }
 
 ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayInteger* carriage) const
@@ -187,6 +216,16 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 {
   // TODO
+}
+
+std::string ArrayInteger::toString() const
+{
+  return std::string();
+}
+
+std::string ArrayInteger::fullString() const
+{
+  return std::string();
 }
 
 short ArrayInteger::MaximumSize()

@@ -17,13 +17,16 @@ class ArrayInteger
   ArrayInteger(const int& = 0);
 	ArrayInteger(const long&);
   ArrayInteger(const std::string&);
+  ArrayInteger(const BasicInteger&);
   void operator = (const int&);
   void operator = (const long&);
   void operator = (const std::string&);
+  void operator = (const BasicInteger&);
   ~ArrayInteger();
   void setInteger(const int&);
   void setInteger(const long&);
   void setInteger(const std::string&);
+  void setInteger(const BasicInteger&);
   short getCurrentSize() const;
   static short getMaximumSize();
   bool operator == (const ArrayInteger&) const;
