@@ -9,40 +9,33 @@
 #include <string>
 #include <exception>
 #include <cmath>
-#include <iostream>
 
 class BasicInteger
 {
  public:
   using Base = int;
-
   BasicInteger(const int& = 0);
   BasicInteger(const long&);
   BasicInteger(const std::string&);
   void operator = (const int&);
   void operator = (const long&);
   void operator = (const std::string&);
-
   short getCurrentSize() const;
   static short getMaximumSize();
-
   bool operator == (const BasicInteger&) const;
   bool operator != (const BasicInteger&) const;
   bool operator > (const BasicInteger&) const;
   bool operator < (const BasicInteger&) const;
   bool operator >= (const BasicInteger&) const;
   bool operator <= (const BasicInteger&) const;
-
   BasicInteger Addition(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Substraction(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Division(const BasicInteger&) const;
-
   std::string toString() const;
   std::string fullString() const;
  private:
   static short MaximumSize();
-
   static short maximum_size_;
   Base data_;
 };
