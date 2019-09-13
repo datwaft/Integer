@@ -10,8 +10,6 @@
 #include <exception>
 #include <cmath>
 
-#include "pair.h"
-
 class BasicInteger
 {
  public:
@@ -34,17 +32,17 @@ class BasicInteger
   bool operator >= (const BasicInteger&) const;
   bool operator <= (const BasicInteger&) const;
 
-  Pair<BasicInteger, BasicInteger> Addition(const BasicInteger&) const;
-  Pair<BasicInteger, BasicInteger> Substraction(const BasicInteger&) const;
-  Pair<BasicInteger, BasicInteger> Multiplication(const BasicInteger&) const;
+  BasicInteger Addition(const BasicInteger&, BasicInteger*) const;
+  BasicInteger Substraction(const BasicInteger&, BasicInteger*) const;
+  BasicInteger Multiplication(const BasicInteger&, BasicInteger*) const;
   BasicInteger Division(const BasicInteger&) const;
 
-  operator std::string();
+  std::string toString() const;
+  std::string fullString() const;
  private:
   static short MaximumSize();
 
   static short maximum_size_;
-  short current_size_;
   Base data_;
 };
 

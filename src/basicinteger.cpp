@@ -23,31 +23,13 @@ short BasicInteger::MaximumSize()
 BasicInteger::BasicInteger(const int& data)
 {
   this->maximum_size_ = MaximumSize();
-  if (data == 0)
-  {
-    this->data_ = 0;
-    this->current_size_ = 1;
-  }
-  else
-  {
-    this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
-    this->current_size_ = static_cast<short>(log10(this->data_) + 1);
-  }
+  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
 }
 
 BasicInteger::BasicInteger(const long& data)
 {
   this->maximum_size_ = MaximumSize();
-  if (data == 0)
-  {
-    this->data_ = 0;
-    this->current_size_ = 1;
-  }
-  else
-  {
-    this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
-    this->current_size_ = static_cast<short>(log10(this->data_) + 1);
-  }
+  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
 }
 
 BasicInteger::BasicInteger(const std::string& data)
@@ -58,31 +40,13 @@ BasicInteger::BasicInteger(const std::string& data)
 void BasicInteger::operator=(const int& data)
 {
   this->maximum_size_ = MaximumSize();
-  if (data == 0)
-  {
-    this->data_ = 0;
-    this->current_size_ = 1;
-  }
-  else
-  {
-    this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
-    this->current_size_ = static_cast<short>(log10(this->data_) + 1);
-  }
+  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
 }
 
 void BasicInteger::operator=(const long& data)
 {
   this->maximum_size_ = MaximumSize();
-  if (data == 0)
-  {
-    this->data_ = 0;
-    this->current_size_ = 1;
-  }
-  else
-  {
-    this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
-    this->current_size_ = static_cast<short>(log10(this->data_) + 1);
-  }
+  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
 }
 
 void BasicInteger::operator=(const std::string& data)
@@ -92,7 +56,10 @@ void BasicInteger::operator=(const std::string& data)
 
 short BasicInteger::getCurrentSize() const
 {
-  return this->current_size_;
+  if (this->data_ != 0)
+    return static_cast<short>(log10(this->data_) + 1);
+  else
+    return 1;
 }
 
 short BasicInteger::getMaximumSize()
@@ -130,37 +97,29 @@ bool BasicInteger::operator<=(const BasicInteger& other) const
   return this->data_ <= other.data_;
 }
 
-Pair<BasicInteger, BasicInteger> BasicInteger::Addition(const BasicInteger& other) const
+BasicInteger BasicInteger::Addition(const BasicInteger& other, BasicInteger* carriage) const
 {
-  Pair<BasicInteger, BasicInteger> result;
-
   Base calculation = this->data_ + other.data_;
-  result.one = calculation;
-  result.two = (calculation >= pow(10, this->maximum_size_) ? 1 : 0);
-
-  return result;
+  if (carriage != nullptr)
+    (*carriage) = (calculation >= pow(10, this->maximum_size_) ? 1 : 0);
+  
+  return calculation;
 }
 
-Pair<BasicInteger, BasicInteger> BasicInteger::Substraction(const BasicInteger& other) const
+BasicInteger BasicInteger::Substraction(const BasicInteger& other, BasicInteger* carriage) const
 {
-  Pair<BasicInteger, BasicInteger> result;
-
   Base calculation = this->data_ - other.data_;
-  result.one = calculation;
-  result.two = (calculation < 0 ? 1 : 0);
+  (*carriage) = (calculation < 0 ? 1 : 0);
 
-  return result;
+  return calculation;
 }
 
-Pair<BasicInteger, BasicInteger> BasicInteger::Multiplication(const BasicInteger& other) const
+BasicInteger BasicInteger::Multiplication(const BasicInteger& other, BasicInteger* carriage) const
 {
-	Pair<BasicInteger, BasicInteger> result;
-
 	long long calculation = static_cast<long long>(this->data_) * static_cast<long long>(other.data_);
-	result.one = static_cast<Base>(calculation % static_cast<long long>(pow(10,this->maximum_size_)));
-	result.two = static_cast<Base>(calculation >= pow(10, this->maximum_size_) ? (calculation / (pow(10, this->maximum_size_))) : 0);
-
-  return result;
+	(*carriage) = static_cast<Base>(calculation >= pow(10, this->maximum_size_) ? (calculation / (pow(10, this->maximum_size_))) : 0);
+  
+  return static_cast<Base>(calculation % static_cast<long long>(pow(10,this->maximum_size_)));
 }
 
 BasicInteger BasicInteger::Division(const BasicInteger& other) const
@@ -168,7 +127,12 @@ BasicInteger BasicInteger::Division(const BasicInteger& other) const
   return BasicInteger(this->data_ / other.data_);
 }
 
-BasicInteger::operator std::string()
+std::string BasicInteger::toString() const
 {
   return std::to_string(this->data_);
+}
+
+std::string BasicInteger::fullString() const
+{
+  return std::string(this->maximum_size_ - this->getCurrentSize() , '0') + this->toString();
 }
