@@ -11,12 +11,13 @@ using namespace std;
 
 int main()
 {
-	BasicInteger test(999999999);
-	BasicInteger test2(999999999);
-	
-	
-	
+	BasicInteger int1(999999999);
+	BasicInteger int2(999999999);
+ 
+  BasicInteger carriage;
+  BasicInteger result = int1.Multiplication(int2, &carriage);
 
-	std::cout << string(test.Addition(test2).one) <<"    " << string(test.Addition(test2).two);
-
+  cout << carriage.toString() << result.fullString() << std::endl;
+  
+  return EXIT_SUCCESS;
 }

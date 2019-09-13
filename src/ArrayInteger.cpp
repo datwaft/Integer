@@ -152,8 +152,8 @@ ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 ArrayInteger::operator std::string()
 {
   std::string result;
-  for (int i = current_size_ - 1; i >= 0; i--)
-    result += std::string(this->data_[i]);
+  //for (int i = current_size_ - 1; i >= 0; i--)
+  //  result += std::string(this->data_[i]);
   return result;
 }
 

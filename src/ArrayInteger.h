@@ -9,7 +9,7 @@
 class ArrayInteger
 {
  public:
-  ArrayInteger(const int&);
+  ArrayInteger(const int& = 0);
 	ArrayInteger(const long&);
   ArrayInteger(const std::string&);
   void operator = (const int&);

@@ -109,7 +109,8 @@ BasicInteger BasicInteger::Addition(const BasicInteger& other, BasicInteger* car
 BasicInteger BasicInteger::Substraction(const BasicInteger& other, BasicInteger* carriage) const
 {
   Base calculation = this->data_ - other.data_;
-  (*carriage) = (calculation < 0 ? 1 : 0);
+  if (carriage != nullptr)
+    (*carriage) = (calculation < 0 ? 1 : 0);
 
   return calculation;
 }
@@ -117,8 +118,9 @@ BasicInteger BasicInteger::Substraction(const BasicInteger& other, BasicInteger*
 BasicInteger BasicInteger::Multiplication(const BasicInteger& other, BasicInteger* carriage) const
 {
 	long long calculation = static_cast<long long>(this->data_) * static_cast<long long>(other.data_);
-	(*carriage) = static_cast<Base>(calculation >= pow(10, this->maximum_size_) ? (calculation / (pow(10, this->maximum_size_))) : 0);
-  
+  if (carriage != nullptr)
+    (*carriage) = static_cast<Base>(calculation >= pow(10, this->maximum_size_) ? (calculation / (pow(10, this->maximum_size_))) : 0);
+ 
   return static_cast<Base>(calculation % static_cast<long long>(pow(10,this->maximum_size_)));
 }
 

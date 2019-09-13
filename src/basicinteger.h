@@ -9,6 +9,7 @@
 #include <string>
 #include <exception>
 #include <cmath>
+#include <iostream>
 
 class BasicInteger
 {
@@ -32,9 +33,9 @@ class BasicInteger
   bool operator >= (const BasicInteger&) const;
   bool operator <= (const BasicInteger&) const;
 
-  BasicInteger Addition(const BasicInteger&, BasicInteger*) const;
-  BasicInteger Substraction(const BasicInteger&, BasicInteger*) const;
-  BasicInteger Multiplication(const BasicInteger&, BasicInteger*) const;
+  BasicInteger Addition(const BasicInteger&, BasicInteger* = nullptr) const;
+  BasicInteger Substraction(const BasicInteger&, BasicInteger* = nullptr) const;
+  BasicInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Division(const BasicInteger&) const;
 
   std::string toString() const;
