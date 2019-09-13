@@ -6,9 +6,9 @@
 #include "basicinteger.h"
 #include "arrayinteger.h"
 
-short BasicInteger::maximum_size_ = BasicInteger::MaximumSize();
+short BasicInteger::digitnumber_ = BasicInteger::CalculateDigitNumber();
 
-short BasicInteger::MaximumSize()
+short BasicInteger::CalculateDigitNumber()
 {
   switch (sizeof(Base))
   {
@@ -22,14 +22,14 @@ short BasicInteger::MaximumSize()
 
 BasicInteger::BasicInteger(const int& data)
 {
-  this->maximum_size_ = MaximumSize();
-  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
+  this->digitnumber_ = CalculateDigitNumber();
+  this->data_ = abs(data) % MaximumNumberPlusOne();
 }
 
 BasicInteger::BasicInteger(const long& data)
 {
-  this->maximum_size_ = MaximumSize();
-  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
+  this->digitnumber_ = CalculateDigitNumber();
+  this->data_ = abs(data) % MaximumNumberPlusOne();
 }
 
 BasicInteger::BasicInteger(const std::string& data)
@@ -39,14 +39,14 @@ BasicInteger::BasicInteger(const std::string& data)
 
 void BasicInteger::operator=(const int& data)
 {
-  this->maximum_size_ = MaximumSize();
-  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
+  this->digitnumber_ = CalculateDigitNumber();
+  this->data_ = abs(data) % MaximumNumberPlusOne();
 }
 
 void BasicInteger::operator=(const long& data)
 {
-  this->maximum_size_ = MaximumSize();
-  this->data_ = abs(data) % static_cast<Base>(pow(10, this->maximum_size_));
+  this->digitnumber_ = CalculateDigitNumber();
+  this->data_ = abs(data) % MaximumNumberPlusOne();
 }
 
 void BasicInteger::operator=(const std::string& data)
@@ -54,7 +54,7 @@ void BasicInteger::operator=(const std::string& data)
   *this = BasicInteger(std::stol(data));
 }
 
-short BasicInteger::getCurrentSize() const
+short BasicInteger::CurrentSize() const
 {
   if (this->data_ != 0)
     return static_cast<short>(log10(this->data_) + 1);
@@ -62,9 +62,9 @@ short BasicInteger::getCurrentSize() const
     return 1;
 }
 
-short BasicInteger::getMaximumSize()
+short BasicInteger::DigitNumber()
 {
-  return BasicInteger::maximum_size_;
+  return BasicInteger::digitnumber_;
 }
 
 bool BasicInteger::operator==(const BasicInteger& other) const
@@ -101,7 +101,7 @@ BasicInteger BasicInteger::Addition(const BasicInteger& other, BasicInteger* car
 {
   Base calculation = this->data_ + other.data_;
   if (carriage != nullptr)
-    (*carriage) = (calculation >= pow(10, this->maximum_size_) ? 1 : 0);
+    (*carriage) = (calculation >= MaximumNumberPlusOne() ? 1 : 0);
   
   return calculation;
 }
@@ -119,14 +119,19 @@ BasicInteger BasicInteger::Multiplication(const BasicInteger& other, BasicIntege
 {
 	long long calculation = static_cast<long long>(this->data_) * static_cast<long long>(other.data_);
   if (carriage != nullptr)
-    (*carriage) = static_cast<Base>(calculation >= pow(10, this->maximum_size_) ? (calculation / (pow(10, this->maximum_size_))) : 0);
+    (*carriage) = static_cast<Base>(calculation >= MaximumNumberPlusOne() ? calculation / MaximumNumberPlusOne() : 0);
  
-  return static_cast<Base>(calculation % static_cast<long long>(pow(10,this->maximum_size_)));
+  return static_cast<Base>(calculation % static_cast<long long>(MaximumNumberPlusOne()));
 }
 
 BasicInteger BasicInteger::Division(const BasicInteger& other) const
 {
   return BasicInteger(this->data_ / other.data_);
+}
+
+BasicInteger::Base BasicInteger::MaximumNumberPlusOne() 
+{
+  return static_cast<Base>(pow(10, digitnumber_));
 }
 
 std::string BasicInteger::toString() const
@@ -136,5 +141,5 @@ std::string BasicInteger::toString() const
 
 std::string BasicInteger::fullString() const
 {
-  return std::string(this->maximum_size_ - this->getCurrentSize() , '0') + this->toString();
+  return std::string(this->digitnumber_ - this->CurrentSize() , '0') + this->toString();
 }

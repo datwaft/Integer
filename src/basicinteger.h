@@ -20,8 +20,8 @@ class BasicInteger
   void operator = (const int&);
   void operator = (const long&);
   void operator = (const std::string&);
-  short getCurrentSize() const;
-  static short getMaximumSize();
+  short CurrentSize() const;
+  static short DigitNumber();
   bool operator == (const BasicInteger&) const;
   bool operator != (const BasicInteger&) const;
   bool operator > (const BasicInteger&) const;
@@ -32,11 +32,12 @@ class BasicInteger
   BasicInteger Substraction(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Division(const BasicInteger&) const;
+  static Base MaximumNumberPlusOne();
   std::string toString() const;
   std::string fullString() const;
  private:
-  static short MaximumSize();
-  static short maximum_size_;
+  static short CalculateDigitNumber();
+  static short digitnumber_;
   Base data_;
 };
 

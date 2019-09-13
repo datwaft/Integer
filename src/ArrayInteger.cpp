@@ -1,3 +1,7 @@
+// arrayinteger.cpp
+// Autores: David Guevara & Mario Arguello
+// Descripción: contiene la implementación del array que amplia el almacenamiento.
+
 #include "ArrayInteger.h"
 
 short ArrayInteger::maximum_size_ = ArrayInteger::MaximumSize();
@@ -5,88 +9,83 @@ short ArrayInteger::maximum_size_ = ArrayInteger::MaximumSize();
 ArrayInteger::ArrayInteger(const int& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
-  this->data_[0] = abs(data);
-  this->current_size_ = 1;
+  this->setInteger(data);
 }
 
 ArrayInteger::ArrayInteger(const long& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
-  this->data_[0] = abs(data) % static_cast<BasicInteger::Base>(pow(10, this->maximum_size_));
-  BasicInteger::Base carriage = abs(data) / static_cast<BasicInteger::Base>(pow(10, this->maximum_size_));
-  if (carriage != 0)
-  {
-    this->data_[1] = carriage;
-    this->current_size_ = 2;
-  }
-  else
-  {
-    this->current_size_ = 1;
-  }
+  this->setInteger(data);
 }
 
 ArrayInteger::ArrayInteger(const std::string& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
-  this->current_size_ = 0;
-
-  std::string aux;
-  for (size_t i = data.size() - 1; i >= 0; i--)
-  {
-    aux += data[i];
-    if (aux.size() == BasicInteger::getMaximumSize())
-    {
-      this->data_[this->current_size_++] = aux;
-      aux = "";
-    }
-  }
-  this->data_[this->current_size_++] = aux;
+  this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const int& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
-  this->data_[0] = abs(data);
-  this->current_size_ = 1;
+  this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const long& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
-  this->data_[0] = abs(data) % static_cast<BasicInteger::Base>(pow(10, this->maximum_size_));
-  BasicInteger::Base carriage = abs(data) / static_cast<BasicInteger::Base>(pow(10, this->maximum_size_));
-  if (carriage != 0)
-  {
-    this->data_[1] = carriage;
-    this->current_size_ = 2;
-  }
-  else
-  {
-    this->current_size_ = 1;
-  }
+  this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const std::string& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
-  this->current_size_ = 0;
-
-  std::string aux;
-  for (size_t i = data.size() - 1; i >= 0; i--)
-  {
-    aux += data[i];
-    if (aux.size() == BasicInteger::getMaximumSize())
-    {
-      this->data_[this->current_size_++] = aux;
-      aux = "";
-    }
-  }
-  this->data_[this->current_size_++] = aux;
+  this->setInteger(data);
 }
 
 ArrayInteger::~ArrayInteger()
 {
   delete[] this->data_;
+}
+
+void ArrayInteger::setInteger(const int& integer)
+{
+  current_size_ = 0;
+  int aux = integer;
+  while (aux != 0 && current_size_ < maximum_size_)
+  {
+    data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
+    aux = aux / BasicInteger::MaximumNumberPlusOne();
+  }
+}
+
+void ArrayInteger::setInteger(const long& integer)
+{
+  current_size_ = 0;
+  int aux = integer;
+  while (aux != 0 && current_size_ < maximum_size_)
+  {
+    data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
+    aux = aux / BasicInteger::MaximumNumberPlusOne();
+  }
+}
+
+void ArrayInteger::setInteger(const std::string& string)
+{
+  current_size_ = 0;
+  std::string aux = string;
+  while (aux.size() != 0 && current_size_ < maximum_size_)
+  {
+    if (aux.size() > BasicInteger::DigitNumber())
+    {
+      data_[current_size_++] = aux.substr(aux.size() - BasicInteger::DigitNumber());
+      aux = aux.substr(aux.size() - BasicInteger::DigitNumber());
+    }
+    else
+    {
+      data_[current_size_++] = aux;
+      aux.clear();
+    }
+  }
 }
 
 short ArrayInteger::getCurrentSize() const
@@ -129,35 +128,27 @@ bool ArrayInteger::operator<=(const ArrayInteger& other) const
   return false;
 }
 
-Pair<ArrayInteger, ArrayInteger> ArrayInteger::Addition(const ArrayInteger& other) const
+ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  return Pair<ArrayInteger, ArrayInteger>();
+  // TODO
 }
 
-Pair<ArrayInteger, ArrayInteger> ArrayInteger::Substraction(const ArrayInteger& other) const
+ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  return Pair<ArrayInteger, ArrayInteger>();
+  // TODO
 }
 
-Pair<ArrayInteger, ArrayInteger> ArrayInteger::Multiplication(const ArrayInteger& other) const
+ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  return Pair<ArrayInteger, ArrayInteger>();
+  // TODO
 }
 
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 {
-  return ArrayInteger();
-}
-
-ArrayInteger::operator std::string()
-{
-  std::string result;
-  //for (int i = current_size_ - 1; i >= 0; i--)
-  //  result += std::string(this->data_[i]);
-  return result;
+  // TODO
 }
 
 short ArrayInteger::MaximumSize()
 {
-  return 3;
+  return kBytes / sizeof(BasicInteger::Base);
 }
