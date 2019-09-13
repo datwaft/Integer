@@ -115,22 +115,58 @@ bool ArrayInteger::operator!=(const ArrayInteger& other) const
 
 bool ArrayInteger::operator>(const ArrayInteger& other) const
 {
-  return false;
+  if (current_size_ > other.current_size_)
+    return true;
+  if (current_size_ < other.current_size_)
+    return false;
+  for (short i = current_size_ - 1; i >= 0; --i)
+  {
+    if (data_[i] <= other.data_[i])
+      return false;
+  }
+  return true;
 }
 
 bool ArrayInteger::operator<(const ArrayInteger& other) const
 {
-  return false;
+  if (current_size_ > other.current_size_)
+    return false;
+  if (current_size_ < other.current_size_)
+    return true;
+  for (short i = current_size_ - 1; i >= 0; --i)
+  {
+    if (data_[i] >= other.data_[i])
+      return false;
+  }
+  return true;
 }
 
 bool ArrayInteger::operator>=(const ArrayInteger& other) const
 {
-  return false;
+  if (current_size_ > other.current_size_)
+    return true;
+  if (current_size_ < other.current_size_)
+    return false;
+  for (short i = current_size_ - 1; i >= 0; --i)
+  {
+    if (data_[i] < other.data_[i])
+      return false;
+  }
+  return true;
 }
 
 bool ArrayInteger::operator<=(const ArrayInteger& other) const
 {
-  return false;
+  if (current_size_ > other.current_size_)
+    return false;
+  if (other.current_size_ > current_size_)
+    return true;
+  for (short i = current_size_ - 1; i >= 0; --i)
+  {
+    if (data_[i] > other.data_[i])
+      return false;
+  }
+  return true;
 }
 
 ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* carriage) const
