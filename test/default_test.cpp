@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iostream>
 #include "../src/basicinteger.h"
-#include "../src/pair.h"
+#include "../src/arrayinteger.h"
 
 using namespace std;
 
@@ -19,5 +19,15 @@ int main()
 
   cout << carriage.toString() << result.fullString() << std::endl;
   
+  ArrayInteger a1("31234123412341234");
+  ArrayInteger a2("67891234986723458745");
+  
+  cout << "-- ArrayIntegers --" << endl;
+  cout << a1.toString() << endl;
+  cout << a2.toString() << endl;
+
+  cout << a1.Substraction(a2).toString() << endl;
+  cout << a2.Substraction(a1).toString() << endl;
+
   return EXIT_SUCCESS;
 }
