@@ -123,7 +123,11 @@ BasicInteger BasicInteger::Multiplication(const BasicInteger& other, BasicIntege
 
 BasicInteger BasicInteger::Division(const BasicInteger& other) const
 {
-  return BasicInteger(this->data_ / other.data_);
+  if (other == 0)
+  {
+    throw std::exception("Division by 0");
+  }
+  return this->data_ / other.data_;
 }
 
 BasicInteger::Base BasicInteger::MaximumNumberPlusOne() 

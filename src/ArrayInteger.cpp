@@ -243,8 +243,36 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
 
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 {
-  // TODO
-  return ArrayInteger();
+ 
+  if (other == 0)
+  {
+    throw std::exception("Division by 0");
+  }
+  if (other > *this)
+  {
+    return 0;
+  }
+  if (other == 1)
+  {
+    return *this;
+  }
+  if (other == *this)
+  {
+    return 1;
+  }
+  ArrayInteger result = * this;
+  int counter = 0;
+ 
+  while (result > -1)
+  {
+   
+    std::cout << " enciclado" << "  " << result.toString() << "   h     " ; // pruebas
+    result = result.Substraction(other);
+    counter++;
+  
+  }
+  
+  return counter;
 }
 
 std::string ArrayInteger::toString() const
