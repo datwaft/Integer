@@ -30,6 +30,14 @@ ArrayInteger::ArrayInteger(const BasicInteger& data)
   this->setInteger(data);
 }
 
+ArrayInteger::ArrayInteger(const ArrayInteger& other)
+{
+  this->data_ = new BasicInteger[this->maximum_size_];
+  this->current_size_ = other.current_size_;
+  for (short i = 0; i < other.current_size_; ++i)
+    this->data_[i] = other.data_[i];
+}
+
 void ArrayInteger::operator=(const int& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
@@ -52,6 +60,14 @@ void ArrayInteger::operator=(const BasicInteger& data)
 {
   this->data_ = new BasicInteger[this->maximum_size_];
   this->setInteger(data);
+}
+
+void ArrayInteger::operator=(const ArrayInteger& other)
+{
+  this->data_ = new BasicInteger[this->maximum_size_];
+  this->current_size_ = other.current_size_;
+  for (short i = 0; i < other.current_size_; ++i)
+    this->data_[i] = other.data_[i];
 }
 
 ArrayInteger::~ArrayInteger()
@@ -87,10 +103,10 @@ void ArrayInteger::setInteger(const std::string& string)
   std::string aux = string;
   while (aux.size() != 0 && current_size_ < maximum_size_)
   {
-    if (aux.size() > BasicInteger::DigitNumber())
+    if (static_cast<short>(aux.size()) > BasicInteger::DigitNumber())
     {
       data_[current_size_++] = aux.substr(aux.size() - BasicInteger::DigitNumber());
-      aux = aux.substr(aux.size() - BasicInteger::DigitNumber());
+      aux = aux.substr(0, aux.size() - BasicInteger::DigitNumber());
     }
     else
     {
@@ -104,6 +120,8 @@ void ArrayInteger::setInteger(const BasicInteger& data)
 {
   current_size_ = 1;
   data_[0] = data;
+  if (data_[0] == 0)
+    current_size_ = 0;
 }
 
 short ArrayInteger::getCurrentSize() const
@@ -190,6 +208,7 @@ bool ArrayInteger::operator<=(const ArrayInteger& other) const
 ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* carriage) const
 {
   // TODO
+  return ArrayInteger();
 }
 
 ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other, ArrayInteger* carriage) const
@@ -201,9 +220,12 @@ ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other, ArrayInteger*
   short i;
   for (i = 0; i < current_size; ++i)
   {
-    data_[i].Substraction(operation_carriage).Substraction(other.data_[i], &operation_carriage);
+    result.data_[i] = data_[i].Substraction(operation_carriage).Substraction(other.data_[i], &operation_carriage);
   }
-  (*carriage) = operation_carriage;
+  if (carriage != nullptr)
+    (*carriage) = operation_carriage;
+  
+  result.current_size_ = current_size;
 
   return result;
 }
@@ -211,21 +233,34 @@ ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other, ArrayInteger*
 ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayInteger* carriage) const
 {
   // TODO
+  return ArrayInteger();
 }
 
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 {
   // TODO
+  return ArrayInteger();
 }
 
 std::string ArrayInteger::toString() const
 {
-  return std::string();
+  if (current_size_ == 0)
+    return "0";
+  std::string result = data_[current_size_ - 1].toString();
+   for (short i = current_size_ - 2; i >= 0; --i)
+    result += data_[i].fullString();
+  return result;
 }
 
 std::string ArrayInteger::fullString() const
 {
-  return std::string();
+  std::string result;
+  for (short i = 0; i < maximum_size_ - current_size_; i++) 
+    result += std::string(BasicInteger::DigitNumber(), '0'); 
+  result += data_[current_size_ - 1].fullString();
+  for (short i = current_size_ - 2; i >= 0; --i)
+    result += data_[i].fullString();
+  return result;
 }
 
 short ArrayInteger::MaximumSize()

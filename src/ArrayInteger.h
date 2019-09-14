@@ -6,8 +6,8 @@
 #define INTEGER_SRC_ARRAYINTEGER_H_
 
 #include <string>
+#include <iostream>
 
-#include "pair.h"
 #include "basicinteger.h"
 
 class ArrayInteger
@@ -18,10 +18,12 @@ class ArrayInteger
 	ArrayInteger(const long&);
   ArrayInteger(const std::string&);
   ArrayInteger(const BasicInteger&);
+  ArrayInteger(const ArrayInteger&);
   void operator = (const int&);
   void operator = (const long&);
   void operator = (const std::string&);
   void operator = (const BasicInteger&);
+  void operator = (const ArrayInteger&);
   ~ArrayInteger();
   void setInteger(const int&);
   void setInteger(const long&);
