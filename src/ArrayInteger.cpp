@@ -211,22 +211,18 @@ ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* car
   return ArrayInteger();
 }
 
-ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other, ArrayInteger* carriage) const
+ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
 {
   short current_size = (current_size_ >= other.current_size_ ? current_size_ : other.current_size_);
   ArrayInteger result;
-  BasicInteger operation_carriage = 0;
   
   short i;
   for (i = 0; i < current_size; ++i)
   {
-    result.data_[i] = data_[i].Substraction(operation_carriage).Substraction(other.data_[i], &operation_carriage);
+    result.data_[i] = data_[i].Substraction(other.data_[i]);
   }
-  if (carriage != nullptr)
-    (*carriage) = operation_carriage;
-  
-  result.current_size_ = current_size;
 
+  result.current_size_ = current_size;
   return result;
 }
 

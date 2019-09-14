@@ -38,7 +38,7 @@ class ArrayInteger
   bool operator >= (const ArrayInteger&) const;
   bool operator <= (const ArrayInteger&) const;
 	ArrayInteger Addition(const ArrayInteger&, ArrayInteger* = nullptr) const;
-	ArrayInteger Substraction(const ArrayInteger&, ArrayInteger* = nullptr) const;
+	ArrayInteger Substraction(const ArrayInteger&) const;
 	ArrayInteger Multiplication(const ArrayInteger&, ArrayInteger* = nullptr) const;
 	ArrayInteger Division(const ArrayInteger&) const;
   std::string toString() const;

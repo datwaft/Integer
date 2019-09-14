@@ -106,12 +106,9 @@ BasicInteger BasicInteger::Addition(const BasicInteger& other, BasicInteger* car
   return calculation;
 }
 
-BasicInteger BasicInteger::Substraction(const BasicInteger& other, BasicInteger* carriage) const
+BasicInteger BasicInteger::Substraction(const BasicInteger& other) const
 {
   Base calculation = this->data_ - other.data_;
-  if (carriage != nullptr)
-    (*carriage) = (calculation < 0 ? 1 : 0);
-
   return calculation;
 }
 
