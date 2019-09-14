@@ -45,6 +45,8 @@ class ArrayInteger
   std::string fullString() const; 
  private:
   static short MaximumSize();
+  bool addBasicInteger(const BasicInteger&);
+  void recalculateCurrentSize();
   static short maximum_size_;
   short current_size_;
   BasicInteger* data_;
