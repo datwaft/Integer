@@ -35,7 +35,7 @@ ArrayInteger::ArrayInteger(const ArrayInteger& other)
   this->data_ = new BasicInteger[this->maximum_size_];
   this->current_size_ = other.current_size_;
   for (short i = 0; i < other.current_size_; ++i)
-    this->data_[i] = other.data_[i];
+  this->data_[i] = other.data_[i];
 }
 
 void ArrayInteger::operator=(const int& data)
@@ -207,8 +207,17 @@ bool ArrayInteger::operator<=(const ArrayInteger& other) const
 
 ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  // TODO
-  return ArrayInteger();
+	ArrayInteger result;
+	BasicInteger operation_carriage;
+
+	short i;
+	for (i = 0; i < MaximumSize(); ++i)
+	{
+		result.data_[i] = data_[i].Addition(operation_carriage).Addition(other.data_[i], &operation_carriage);
+	}
+	result.current_size_ = MaximumSize();
+	(*carriage) = operation_carriage;
+	return result;
 }
 
 ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
