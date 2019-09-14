@@ -40,30 +40,35 @@ ArrayInteger::ArrayInteger(const ArrayInteger& other)
 
 void ArrayInteger::operator=(const int& data)
 {
+  delete[] this->data_;
   this->data_ = new BasicInteger[this->maximum_size_];
   this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const long& data)
 {
+  delete[] this->data_;
   this->data_ = new BasicInteger[this->maximum_size_];
   this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const std::string& data)
 {
+  delete[] this->data_;
   this->data_ = new BasicInteger[this->maximum_size_];
   this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const BasicInteger& data)
 {
+  delete[] this->data_;
   this->data_ = new BasicInteger[this->maximum_size_];
   this->setInteger(data);
 }
 
 void ArrayInteger::operator=(const ArrayInteger& other)
 {
+  delete[] this->data_;
   this->data_ = new BasicInteger[this->maximum_size_];
   this->current_size_ = other.current_size_;
   for (short i = 0; i < other.current_size_; ++i)
