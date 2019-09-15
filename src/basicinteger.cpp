@@ -147,5 +147,5 @@ std::string BasicInteger::toString() const
 
 std::string BasicInteger::fullString() const
 {
-  return std::string(this->digitnumber_ - this->CurrentSize() , '0') + this->toString();
+  return std::string(this->digitnumber_ - this->CurrentSize(), '0') + (data_ != 0 ? this->toString() : "");
 }
