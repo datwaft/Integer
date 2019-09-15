@@ -288,7 +288,7 @@ ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
   while (result > -1)
   {
    
-    std::cout << " enciclado" << "  " << result.toString() << "   h     " ; // pruebas
+    //std::cout << " enciclado" << "  " << result.toString() << "   h     " ; // pruebas
     result = result.Substraction(other);
     counter++;
   
