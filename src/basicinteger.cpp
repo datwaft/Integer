@@ -59,7 +59,7 @@ short BasicInteger::CurrentSize() const
   if (this->data_ != 0)
     return static_cast<short>(log10(this->data_) + 1);
   else
-    return 1;
+    return 0;
 }
 
 short BasicInteger::DigitNumber()
@@ -133,6 +133,11 @@ BasicInteger BasicInteger::Division(const BasicInteger& other) const
 BasicInteger::Base BasicInteger::MaximumNumberPlusOne() 
 {
   return static_cast<Base>(pow(10, digitnumber_));
+}
+
+BasicInteger BasicInteger::NineComplement() const
+{
+  return MaximumNumberPlusOne() - 1 - this->data_;
 }
 
 std::string BasicInteger::toString() const

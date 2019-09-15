@@ -227,17 +227,18 @@ ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* car
 
 ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
 {
-  short bigger_size = (current_size_ >= other.current_size_ ? current_size_ : other.current_size_);
   ArrayInteger result;
-  BasicInteger carriage_result(11);
-
-  short i;
-  for (i = 0; i < bigger_size; ++i)
+  BasicInteger carriage;
+  
+  for (short i = 0; i < maximum_size_; ++i)
   {
-    result.data_[i] = data_[i].Substraction(other.data_[i]);
+    if (*this > other)
+      result.data_[i] = data_[i].Addition(carriage).Addition(other.data_[i].NineComplement().Addition(i == 0 ? 1 : 0), &carriage);
+    else
+      result.data_[i] = other.data_[i].Addition(carriage).Addition(data_[i].NineComplement().Addition(i == 0 ? 1 : 0), &carriage);
   }
+  result.recalculateCurrentSize();
 
-  result.current_size_ = bigger_size;
   return result;
 }
 
@@ -325,7 +326,11 @@ short ArrayInteger::MaximumSize()
 bool ArrayInteger::addBasicInteger(const BasicInteger& data)
 {
   if (current_size_ < maximum_size_)
+  {
     data_[current_size_++] = data;
+    return true;
+  }
+  return false;
 }
 
 void ArrayInteger::recalculateCurrentSize()
