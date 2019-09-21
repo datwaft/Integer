@@ -139,6 +139,11 @@ short ArrayInteger::getMaximumSize()
   return ArrayInteger::maximum_size_;
 }
 
+short ArrayInteger::getDigits() const
+{
+  return BasicInteger::DigitNumber() * (current_size_ - 1) + data_[current_size_ - 1].CurrentSize();
+}
+
 bool ArrayInteger::operator==(const ArrayInteger& other) const
 {
   if (current_size_ != other.current_size_)
@@ -213,15 +218,19 @@ bool ArrayInteger::operator<=(const ArrayInteger& other) const
 ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* carriage) const
 {
 	ArrayInteger result;
-	BasicInteger operation_carriage;
+  BasicInteger operation_carriage;
+	BasicInteger operation_carriage1;
+	BasicInteger operation_carriage2;
 
 	short i;
 	for (i = 0; i < MaximumSize(); ++i)
 	{
-		result.data_[i] = data_[i].Addition(operation_carriage).Addition(other.data_[i], &operation_carriage);
+		result.data_[i] = data_[i].Addition(operation_carriage, &operation_carriage1).Addition(other.data_[i], &operation_carriage2);
+    operation_carriage = operation_carriage1.Addition(operation_carriage2);
 	}
-	result.current_size_ = MaximumSize();
-	(*carriage) = operation_carriage;
+  result.recalculateCurrentSize();
+  if(carriage != nullptr)
+    (*carriage) = operation_carriage;
 	return result;
 }
 
@@ -244,23 +253,43 @@ ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
 
 ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  short max = (current_size_ >= other.current_size_ ? current_size_ : other.current_size_);
-
-  ArrayInteger result;
-  (*carriage) = ArrayInteger();
-
-  BasicInteger aux1;
-  BasicInteger aux2;
-
-  for (short i = 0; i < max; ++i)
+  std::cout << "[" << this->toString() << "][" << other.toString() << "]\n";
+  if (*this < 10 || other < 10)
   {
-    for (short j = 0; j < max; ++j)
-    {
-      aux1 = data_[i].Multiplication(other.data_[j], &aux2);
-    }
+    return std::stol(this->toString()) * std::stol(other.toString());
   }
 
-  return result;
+  short m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
+  short m2 = m/2;
+
+  ArrayInteger high1;
+  ArrayInteger low1;
+  this->Split(&high1, &low1, m2);
+
+  ArrayInteger high2;
+  ArrayInteger low2;
+  this->Split(&high2, &low2, m2);
+
+  ArrayInteger z0 = low1.Multiplication(low2);
+  ArrayInteger z1 = (low1.Addition(high1)).Multiplication(low2.Addition(high2));
+  ArrayInteger z2 = high1.Multiplication(high2);
+
+  ArrayInteger carriage_aux;
+  ArrayInteger result1 = z2.AddPadding(m2 * 2, &carriage_aux);
+  if(carriage != nullptr)
+    *carriage = carriage->Addition(carriage_aux);
+  ArrayInteger result2 = (z1.Substraction(z2.Substraction(z0))).AddPadding(m2, &carriage_aux);
+  if(carriage != nullptr)
+    *carriage = carriage->Addition(carriage_aux);
+  
+  ArrayInteger carriage1;
+  ArrayInteger carriage2;
+  ArrayInteger final_result = result1.Addition(result2, &carriage1).Addition(z0, &carriage2);
+  if(carriage != nullptr)
+    *carriage = carriage->Addition(carriage1.Addition(carriage2));
+  if (carriage != nullptr && *carriage != 0)
+    std::cout << carriage->toString() << std::endl;
+  return final_result;
 }
 
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
@@ -331,6 +360,30 @@ bool ArrayInteger::addBasicInteger(const BasicInteger& data)
     return true;
   }
   return false;
+}
+
+void ArrayInteger::Split(ArrayInteger* high, ArrayInteger* low, short division) const
+{
+  std::string string = this->toString();
+  if (division >= static_cast<short>(string.length()))
+  {
+    *high = 0;
+    *low = *this; 
+  }
+  else
+  {
+    *high = string.substr(0, division);
+    *low = string.substr(division);
+  }
+}
+
+ArrayInteger ArrayInteger::AddPadding(short padding, ArrayInteger* carriage) const
+{
+  std::string string = this->toString();
+  string += std::string(padding, '0');
+  if(carriage != nullptr)
+    *carriage = string.substr(0, string.size() - this->maximum_size_ * BasicInteger::DigitNumber());
+  return string;
 }
 
 void ArrayInteger::recalculateCurrentSize()

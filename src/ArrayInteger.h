@@ -31,6 +31,7 @@ class ArrayInteger
   void setInteger(const BasicInteger&);
   short getCurrentSize() const;
   static short getMaximumSize();
+  short getDigits() const;
   bool operator == (const ArrayInteger&) const;
   bool operator != (const ArrayInteger&) const;
   bool operator > (const ArrayInteger&) const;
@@ -46,6 +47,8 @@ class ArrayInteger
  private:
   static short MaximumSize();
   bool addBasicInteger(const BasicInteger&);
+  void Split(ArrayInteger*, ArrayInteger*, short) const;
+  ArrayInteger AddPadding(short, ArrayInteger* = nullptr) const;
   void recalculateCurrentSize();
   static short maximum_size_;
   short current_size_;
