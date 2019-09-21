@@ -1,6 +1,6 @@
 // arrayinteger.cpp
 // Autores: David Guevara & Mario Arguello
-// Descripción: contiene la implementación del array que amplia el almacenamiento.
+// Descripciï¿½n: contiene la implementaciï¿½n del array que amplia el almacenamiento.
 
 #include "ArrayInteger.h"
 
@@ -295,7 +295,7 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 {
  
-  if (other == 0)
+ /* if (other == 0)
   {
     throw std::exception("Division by 0");
   }
@@ -310,19 +310,20 @@ ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
   if (other == *this)
   {
     return 1;
-  }
-  ArrayInteger result = * this;
+  }*/
+  ArrayInteger result = 0;
+  ArrayInteger carriage;
   int counter = 0;
  
-  while (result > -1)
+  while ((result < *this))
   {
-   
-    std::cout << " enciclado" << "  " << result.toString() << "   h     " ; // pruebas
-    result = result.Substraction(other);
+
+    result = result.Addition(other, &carriage);
     counter++;
   
   }
-  
+  if (result > * this)
+    return counter - 1;
   return counter;
 }
 
