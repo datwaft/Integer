@@ -263,6 +263,7 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
       result = this->Multiplication(other.data_[0], &operation_carriage);
     if(carriage != nullptr)
       *carriage = carriage->Addition(operation_carriage);
+    return result;
   }
 
   short m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
@@ -279,7 +280,7 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
   ArrayInteger z0 = low1.Multiplication(low2);
   ArrayInteger z1 = (low1.Addition(high1)).Multiplication(low2.Addition(high2));
   ArrayInteger z2 = high1.Multiplication(high2);
-
+  
   ArrayInteger carriage_aux;
   ArrayInteger result1 = z2.AddPadding(m2 * 2, &carriage_aux);
   if(carriage != nullptr)
