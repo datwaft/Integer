@@ -14,6 +14,12 @@ gasta \bytes\ bytes de memoria. Esto en un sistema de x86\_64 equivale a
 de almacenar \digits\ dígitos. Esto implica que un solo \textbf{NodeInteger} por su 
 cuenta es capaz de almacenar \digits\ $*$ \the\numexpr\bytes/\base\relax\ dígitos,
 lo cual equivale a \the\numexpr\bytes/\base*\digits\relax\ dígitos.
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{./img/object_diagram.png}
+  \caption{Diagrama objeto de \textbf{Integer}}
+\label{fig:dig_obj}
+\end{figure}
 \section{Desperdicio}
 Debido a que cada \textbf{NodeInteger} abarca un total de \bytes\ bytes en esta
 implementación el desperdicio de memoria en caso de que un \textbf{NodeInteger}
@@ -23,13 +29,14 @@ bytes; y tomando $n$ como el número de celdas de cada \textbf{NodeInteger}, est
 equivale a $\frac{\bytes}{b}$; esto implica que la fórmula $d(b, n)$ equivale a
 la constante \bytes\ más el número de bytes que un puntero ocupa, el cual
 dependiendo de la arquitectura es 4 u 8.\\
-En el mejor de los casos, cuando cada uno de los \textbf{NodeInteger} están completamente
-llenos, el desperdicio es 4 y 8 por cada \textbf{NodeInteger} que el
+En el mejor de los casos, cuando cada uno de los \textbf{NodeInteger} está 
+completamente lleno, el desperdicio es 4 y 8 por cada \textbf{NodeInteger} que el
 \textbf{Integer} posee. Y en el peor de los casos el desperdicio es $(\bytes\ + 4$
 u $8) * IntegerSize$, dependiendo de la arquitectura.
-\begin{figure}
-\centering
-  \includegraphics[width=0.7\columnwidth]{./img/object_diagram.png}
-  \caption{Diagrama objeto de \textbf{Integer}}
-\label{fig:dig_obj}
-\end{figure}
+\section{Operaciones aritméticas}
+En lo que corresponde a las operaciones aritméticas, se le delegó a las unidades
+más básicas, \textbf{BasicInteger} y \textbf{NodeInteger}, las operaciones
+básicas de la suma y la resta, debido a la facilidad con la que estas
+operaciones se pueden implementar de manera modular. Para las operaciones más
+complejas de la multiplicación y la división, estas se implementaron en la clase
+\textbf{Integer}.
