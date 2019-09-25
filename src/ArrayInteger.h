@@ -41,6 +41,7 @@ class ArrayInteger
 	ArrayInteger Addition(const ArrayInteger&, ArrayInteger* = nullptr) const;
 	ArrayInteger Substraction(const ArrayInteger&) const;
 	ArrayInteger Multiplication(const ArrayInteger&, ArrayInteger* = nullptr) const;
+	ArrayInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
 	ArrayInteger Division(const ArrayInteger&) const;
   std::string toString() const;
   std::string fullString() const; 

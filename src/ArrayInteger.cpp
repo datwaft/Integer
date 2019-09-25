@@ -253,10 +253,16 @@ ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
 
 ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayInteger* carriage) const
 {
-  std::cout << "[" << this->toString() << "][" << other.toString() << "]\n";
-  if (*this < 10 || other < 10)
+  if (this->current_size_ == 1 || other.current_size_ == 1)
   {
-    return std::stol(this->toString()) * std::stol(other.toString());
+    BasicInteger operation_carriage;
+    ArrayInteger result;
+    if (this->current_size_ == 1)
+      result = other.Multiplication(this->data_[0], &operation_carriage);
+    if (other.current_size_ == 1)
+      result = this->Multiplication(other.data_[0], &operation_carriage);
+    if(carriage != nullptr)
+      *carriage = carriage->Addition(operation_carriage);
   }
 
   short m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
@@ -287,9 +293,24 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
   ArrayInteger final_result = result1.Addition(result2, &carriage1).Addition(z0, &carriage2);
   if(carriage != nullptr)
     *carriage = carriage->Addition(carriage1.Addition(carriage2));
-  if (carriage != nullptr && *carriage != 0)
-    std::cout << carriage->toString() << std::endl;
   return final_result;
+}
+
+ArrayInteger ArrayInteger::Multiplication(const BasicInteger& number, BasicInteger* carriage) const
+{
+  ArrayInteger result;
+  BasicInteger operation_carriage1;
+  BasicInteger operation_carriage2;
+  BasicInteger operation_carriage;
+  for (short i = 0; i < this->current_size_; ++i)
+  {
+    result.data_[i] = this->data_[i].Multiplication(number, &operation_carriage1);
+    result.data_[i] = result.data_[i].Addition(operation_carriage, &operation_carriage2);
+    operation_carriage = operation_carriage1.Addition(operation_carriage2);
+  }
+  *carriage = operation_carriage;
+  result.recalculateCurrentSize();
+  return result;
 }
 
 ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
