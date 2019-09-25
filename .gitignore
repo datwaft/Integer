@@ -36,3 +36,12 @@
 src/.vs/
 Debug/
 x64/
+
+# LaTeX
+*.aux
+*.bcf
+*.fdb_latexmk
+*.fls
+*.log
+*.run.xml
+*.synctex.gz
