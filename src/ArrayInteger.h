@@ -45,7 +45,7 @@ class ArrayInteger
 	ArrayInteger Division(const ArrayInteger&) const;
   std::string toString() const;
   std::string fullString() const; 
- private:
+ protected:
   static short MaximumSize();
   bool addBasicInteger(const BasicInteger&);
   void Split(ArrayInteger*, ArrayInteger*, short) const;

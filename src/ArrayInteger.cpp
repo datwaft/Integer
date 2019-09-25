@@ -35,7 +35,7 @@ ArrayInteger::ArrayInteger(const ArrayInteger& other)
   this->data_ = new BasicInteger[this->maximum_size_];
   this->current_size_ = other.current_size_;
   for (short i = 0; i < other.current_size_; ++i)
-  this->data_[i] = other.data_[i];
+    this->data_[i] = other.data_[i];
 }
 
 void ArrayInteger::operator=(const int& data)
@@ -276,10 +276,17 @@ ArrayInteger ArrayInteger::Multiplication(const ArrayInteger& other, ArrayIntege
   ArrayInteger high2;
   ArrayInteger low2;
   this->Split(&high2, &low2, m2);
-
-  ArrayInteger z0 = low1.Multiplication(low2);
-  ArrayInteger z1 = (low1.Addition(high1)).Multiplication(low2.Addition(high2));
-  ArrayInteger z2 = high1.Multiplication(high2);
+  
+  ArrayInteger operation_carriage;
+  ArrayInteger z0 = low1.Multiplication(low2, &operation_carriage);
+  if(carriage != nullptr)
+    *carriage = carriage->Addition(operation_carriage);
+  ArrayInteger z1 = (low1.Addition(high1)).Multiplication(low2.Addition(high2), &operation_carriage);
+  if(carriage != nullptr)
+    *carriage = carriage->Addition(operation_carriage);
+  ArrayInteger z2 = high1.Multiplication(high2, &operation_carriage);
+  if(carriage != nullptr)
+    *carriage = carriage->Addition(operation_carriage);
   
   ArrayInteger carriage_aux;
   ArrayInteger result1 = z2.AddPadding(m2 * 2, &carriage_aux);
