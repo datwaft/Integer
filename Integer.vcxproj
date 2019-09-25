@@ -125,12 +125,14 @@
   <ItemGroup>
     <ClCompile Include="src\arrayinteger.cpp" />
     <ClCompile Include="src\basicinteger.cpp" />
+    <ClCompile Include="src\nodeinteger.cpp" />
     <ClCompile Include="test\default_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\arrayinteger.h" />
     <ClInclude Include="src\basicinteger.h" />
     <ClInclude Include="src\integer.h" />
+    <ClInclude Include="src\nodeinteger.h" />
     <ClInclude Include="src\pair.h" />
     <ClInclude Include="src\sign.h" />
   </ItemGroup>

@@ -18,7 +18,7 @@ class NodeInteger: public ArrayInteger
   NodeInteger(const BasicInteger&);
   NodeInteger(const ArrayInteger&);
   NodeInteger(const NodeInteger&);
-  NodeInteger* next;
+  NodeInteger* next_;
 };
 
 #endif // !INTEGER_SRC_NODEINTEGER_H_
