@@ -1,9 +1,14 @@
 #ifndef INTEGER_SRC_INTEGER_H_
 #define INTEGER_SRC_INTEGER_H_
 
+#include <iostream>
+
 #include "basicinteger.h"
 #include "arrayinteger.h"
 #include "nodeinteger.h"
+
+#define ZERO Integer(0);
+#define ONE Integer(0);
 
 class Integer
 {
@@ -22,6 +27,10 @@ public:
   void operator = (const ArrayInteger&);
   void operator = (const NodeInteger&);
   void operator = (const Integer&);
+  void operator += (const Integer&);
+  void operator -= (const Integer&);
+  void operator *= (const Integer&);
+  void operator /= (const Integer&);
   ~Integer();
   void setInteger(const int&);
   void setInteger(const long&);
@@ -37,12 +46,13 @@ public:
   bool operator < (const Integer&) const;
   bool operator >= (const Integer&) const;
   bool operator <= (const Integer&) const;
-  Integer Addition(const Integer&) const;
-  Integer Substraction(const Integer&) const;
-  Integer Multiplication(const Integer&) const;
-  Integer Division(const Integer&) const;
+  Integer operator + (const Integer&) const;
+  Integer operator - (const Integer&) const;
+  Integer operator * (const Integer&) const;
+  Integer operator / (const Integer&) const;
+  friend std::ostream& operator<<(std::ostream&, const Integer&);
   std::string toString() const;
-  std::string fullString() const;
+  static Integer Parse(std::string);
 private:
   int current_size_;
   NodeInteger* first_;

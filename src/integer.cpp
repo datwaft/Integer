@@ -56,6 +56,22 @@ void Integer::operator=(const Integer& other)
 {
 }
 
+void Integer::operator+=(const Integer&)
+{
+}
+
+void Integer::operator-=(const Integer&)
+{
+}
+
+void Integer::operator*=(const Integer&)
+{
+}
+
+void Integer::operator/=(const Integer&)
+{
+}
+
 Integer::~Integer()
 {
 }
@@ -123,22 +139,22 @@ bool Integer::operator<=(const Integer& other) const
   return false;
 }
 
-Integer Integer::Addition(const Integer& other) const
+Integer Integer::operator+(const Integer&) const
 {
   return Integer();
 }
 
-Integer Integer::Substraction(const Integer& other) const
+Integer Integer::operator-(const Integer&) const
 {
   return Integer();
 }
 
-Integer Integer::Multiplication(const Integer& other) const
+Integer Integer::operator*(const Integer&) const
 {
   return Integer();
 }
 
-Integer Integer::Division(const Integer& other) const
+Integer Integer::operator/(const Integer&) const
 {
   return Integer();
 }
@@ -148,7 +164,13 @@ std::string Integer::toString() const
   return std::string();
 }
 
-std::string Integer::fullString() const
+Integer Integer::Parse(std::string string)
 {
-  return std::string();
+  return Integer(string);
+}
+
+std::ostream& operator<<(std::ostream& out, const Integer& integer)
+{
+  out << integer.toString();
+  return out;
 }
