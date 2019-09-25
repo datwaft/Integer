@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="src\arrayinteger.cpp" />
     <ClCompile Include="src\basicinteger.cpp" />
+    <ClCompile Include="src\integer.cpp" />
     <ClCompile Include="src\nodeinteger.cpp" />
     <ClCompile Include="test\default_test.cpp" />
   </ItemGroup>
