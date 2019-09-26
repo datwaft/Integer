@@ -114,7 +114,8 @@ void Integer::setInteger(const std::string& data)
       }
       else
       {
-        actual = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        first_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        actual = first_;
       }
       aux = aux.substr(0, aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber());
     }
@@ -126,7 +127,8 @@ void Integer::setInteger(const std::string& data)
       }
       else
       {
-        actual = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        first_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        actual = first_;
       }
       aux.clear();
     }
