@@ -217,6 +217,8 @@ bool ArrayInteger::operator<=(const ArrayInteger& other) const
 
 ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* carriage) const
 {
+  if (other == 0)
+    return *this;
 	ArrayInteger result;
   BasicInteger operation_carriage;
 	BasicInteger operation_carriage1;
@@ -236,6 +238,8 @@ ArrayInteger ArrayInteger::Addition(const ArrayInteger& other, ArrayInteger* car
 
 ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
 {
+  if (other == 0)
+    return *this;
   ArrayInteger result;
   BasicInteger carriage;
   
