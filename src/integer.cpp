@@ -153,11 +153,11 @@ void Integer::setInteger(const std::string& data)
     {
       if (actual)
       {
-        actual->next_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        actual->next_ = new NodeInteger(aux);
       }
       else
       {
-        first_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        first_ = new NodeInteger(aux);
         actual = first_;
       }
       aux.clear();
@@ -308,22 +308,24 @@ bool Integer::operator<=(const Integer& other) const
   return true;
 }
 
-Integer Integer::operator+(const Integer&) const
+Integer Integer::operator+(const Integer& other) const
+{
+  NodeInteger* this_actual = this->first_;
+  NodeInteger* other_actual = other.first_;
+  return Integer();
+}
+
+Integer Integer::operator-(const Integer& other) const
 {
   return Integer();
 }
 
-Integer Integer::operator-(const Integer&) const
+Integer Integer::operator*(const Integer& other) const
 {
   return Integer();
 }
 
-Integer Integer::operator*(const Integer&) const
-{
-  return Integer();
-}
-
-Integer Integer::operator/(const Integer&) const
+Integer Integer::operator/(const Integer& other) const
 {
   return Integer();
 }
@@ -343,9 +345,13 @@ std::string Integer::toString() const
   return result;
 }
 
-Integer Integer::Parse(std::string string)
+Integer Integer::Parse(const std::string& string)
 {
   return Integer(string);
+}
+
+Integer::Integer(NodeInteger* )
+{
 }
 
 void Integer::Clear()
