@@ -27,6 +27,7 @@ Integer::Integer(const BasicInteger& data): first_(nullptr)
 Integer::Integer(const ArrayInteger& data): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(data);
 }
 
 Integer::Integer(const NodeInteger& data): first_(nullptr)
@@ -43,51 +44,77 @@ Integer::Integer(const Integer& other): first_(nullptr)
 
 void Integer::operator=(const int& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const long& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const std::string& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const BasicInteger& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const ArrayInteger& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const NodeInteger& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const Integer& other)
 {
+  this->Clear();
+  this->setInteger(other);
 }
 
-void Integer::operator+=(const Integer&)
+void Integer::operator+=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this + other;
+  this->Clear(aux);
 }
 
-void Integer::operator-=(const Integer&)
+void Integer::operator-=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this - other;
+  this->Clear(aux);
 }
 
-void Integer::operator*=(const Integer&)
+void Integer::operator*=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this * other;
+  this->Clear(aux);
 }
 
-void Integer::operator/=(const Integer&)
+void Integer::operator/=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this / other;
+  this->Clear(aux);
 }
 
 Integer::~Integer()
 {
-
+  this->Clear();
 }
 
 void Integer::setInteger(const int& data)
@@ -117,13 +144,23 @@ void Integer::setInteger(const std::string& data)
       }
       else
       {
-        actual = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        first_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        actual = first_;
       }
       aux = aux.substr(0, aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber());
     }
     else
     {
-      actual->next_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+      if (actual)
+      {
+        actual->next_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+      }
+      else
+      {
+        first_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        actual = first_;
+      }
+      aux.clear();
     }
     this->current_size_ += 1;
   }
@@ -176,34 +213,99 @@ int Integer::getCurrentSize() const
 
 bool Integer::operator==(const Integer& other) const
 {
-  NodeInteger* actual = this->first_;
-
-  return false;
+  if (this->current_size_ != other.current_size_)
+    return false;
+  NodeInteger* actual_this = this->first_;
+  NodeInteger* actual_other = other.first_;
+  while (actual_this != nullptr)
+  {
+    if (*actual_this != *actual_other)
+      return false;
+    actual_this = actual_this->next_;
+    actual_other = actual_other->next_;
+  }
+  return true;
 }
 
 bool Integer::operator!=(const Integer& other) const
 {
-  return false;
+  return !(*this == other);
 }
 
 bool Integer::operator>(const Integer& other) const
 {
-  return false;
+  if(this->current_size_ < other.current_size_)
+    return false;
+  if (this->current_size_ > other.current_size_)
+    return true;
+
+  NodeInteger* actual_this = this->first_;
+  NodeInteger* actual_other = other.first_;
+  while (actual_this != nullptr)
+  {
+    if (*actual_this <= *actual_other)
+      return false;
+    actual_this = actual_this->next_;
+    actual_other = actual_other->next_;
+  }
+  return true;
 }
 
 bool Integer::operator<(const Integer& other) const
 {
-  return false;
+  if(this->current_size_ > other.current_size_)
+    return false;
+  if (this->current_size_ < other.current_size_)
+    return true;
+
+  NodeInteger* actual_this = this->first_;
+  NodeInteger* actual_other = other.first_;
+  while (actual_this != nullptr)
+  {
+    if (*actual_this >= *actual_other)
+      return false;
+    actual_this = actual_this->next_;
+    actual_other = actual_other->next_;
+  }
+  return true;
 }
 
 bool Integer::operator>=(const Integer& other) const
 {
-  return false;
+  if(this->current_size_ < other.current_size_)
+    return false;
+  if (this->current_size_ > other.current_size_)
+    return true;
+
+  NodeInteger* actual_this = this->first_;
+  NodeInteger* actual_other = other.first_;
+  while (actual_this != nullptr)
+  {
+    if (*actual_this < *actual_other)
+      return false;
+    actual_this = actual_this->next_;
+    actual_other = actual_other->next_;
+  }
+  return true;
 }
 
 bool Integer::operator<=(const Integer& other) const
 {
-  return false;
+  if(this->current_size_ > other.current_size_)
+    return false;
+  if (this->current_size_ < other.current_size_)
+    return true;
+
+  NodeInteger* actual_this = this->first_;
+  NodeInteger* actual_other = other.first_;
+  while (actual_this != nullptr)
+  {
+    if (*actual_this > *actual_other)
+      return false;
+    actual_this = actual_this->next_;
+    actual_other = actual_other->next_;
+  }
+  return true;
 }
 
 Integer Integer::operator+(const Integer&) const
@@ -242,6 +344,29 @@ std::string Integer::toString() const
 Integer Integer::Parse(std::string string)
 {
   return Integer(string);
+}
+
+void Integer::Clear()
+{
+  NodeInteger* aux;
+  while (this->first_ != nullptr)
+  {
+    aux = this->first_;
+    this->first_ = this->first_->next_;
+    delete aux;
+  }
+  this->current_size_ = 0;
+}
+
+void Integer::Clear(NodeInteger* node)
+{ 
+  NodeInteger* aux;
+  while (node != nullptr)
+  {
+    aux = node;
+    node = node->next_;
+    delete aux;
+  }
 }
 
 std::ostream& operator<<(std::ostream& out, const Integer& integer)
