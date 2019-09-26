@@ -315,7 +315,7 @@ Integer Integer::operator+(const Integer& other) const
 {
   NodeInteger* this_actual = this->first_;
   NodeInteger* other_actual = other.first_;
-  NodeInteger* result;
+  NodeInteger* result = nullptr;
   NodeInteger* aux = nullptr;
   NodeInteger carriage;
   NodeInteger carriage1;
