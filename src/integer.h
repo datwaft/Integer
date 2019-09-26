@@ -52,8 +52,9 @@ public:
   Integer operator / (const Integer&) const;
   friend std::ostream& operator<<(std::ostream&, const Integer&);
   std::string toString() const;
-  static Integer Parse(std::string);
+  static Integer Parse(const std::string&);
 private:
+  Integer(NodeInteger*);
   void Clear();
   void Clear(NodeInteger*);
   int current_size_;
