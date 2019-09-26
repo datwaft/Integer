@@ -1,31 +1,38 @@
 #include "integer.h"
 
-Integer::Integer(const int& data)
+Integer::Integer(const int& data): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
-Integer::Integer(const long& data)
+Integer::Integer(const long& data): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
-Integer::Integer(const std::string& data)
+Integer::Integer(const std::string& data): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
-Integer::Integer(const BasicInteger& data)
+Integer::Integer(const BasicInteger& data): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
-Integer::Integer(const ArrayInteger& data)
+Integer::Integer(const ArrayInteger& data): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
-Integer::Integer(const NodeInteger& data)
+Integer::Integer(const NodeInteger& data): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
-Integer::Integer(const Integer& other)
+Integer::Integer(const Integer& other): first_(nullptr)
 {
+  current_size_ = 0;
 }
 
 void Integer::operator=(const int& data)
@@ -161,7 +168,15 @@ Integer Integer::operator/(const Integer&) const
 
 std::string Integer::toString() const
 {
-  return std::string();
+  std::string result;
+  NodeInteger* actual = this->first_;
+  while (actual->next_ != nullptr)
+  {
+    result += actual->fullString();
+    actual = actual->next_;
+  }
+  result += actual->toString();
+  return result;
 }
 
 Integer Integer::Parse(std::string string)
