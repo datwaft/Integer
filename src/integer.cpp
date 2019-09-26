@@ -198,8 +198,11 @@ void Integer::setInteger(const Integer& other)
     }
     else
     {
-      aux->next_ = new NodeInteger(*otheraux->next_);
-      aux = aux->next_;
+      if (otheraux->next_)
+      {
+        aux->next_ = new NodeInteger(*(otheraux->next_));
+        aux = aux->next_;
+      }
     }
     otheraux = otheraux->next_;
     current_size_++;
