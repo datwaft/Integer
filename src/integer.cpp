@@ -312,7 +312,25 @@ Integer Integer::operator+(const Integer& other) const
 {
   NodeInteger* this_actual = this->first_;
   NodeInteger* other_actual = other.first_;
-  return Integer();
+  NodeInteger* result = nullptr;
+
+  while (this_actual != nullptr || other_actual != nullptr)
+  {
+    if (this_actual == nullptr)
+    {
+      if(result == nullptr)
+    }
+    else if (other_actual == nullptr)
+    {
+
+    }
+    else
+    {
+
+    }
+  }
+
+  return Integer(result);
 }
 
 Integer Integer::operator-(const Integer& other) const
@@ -337,9 +355,9 @@ std::string Integer::toString() const
   while (actual != nullptr)
   {
     if (actual->next_ != nullptr)
-      result += actual->fullString();
+      result = actual->fullString() + result;
     else
-      result += actual->toString();
+      result = actual->toString() + result;
     actual = actual->next_;
   }
   return result;
