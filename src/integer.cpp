@@ -350,8 +350,16 @@ Integer Integer::Parse(const std::string& string)
   return Integer(string);
 }
 
-Integer::Integer(NodeInteger* )
+Integer::Integer(NodeInteger* node)
 {
+  this->current_size_ = 0;
+  this->first_ = node;
+  NodeInteger* aux = node;
+  while (aux != nullptr)
+  {
+    aux = aux->next_;
+    current_size_++;
+  }
 }
 
 void Integer::Clear()
