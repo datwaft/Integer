@@ -3,21 +3,25 @@
 Integer::Integer(const int& data): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(data);
 }
 
 Integer::Integer(const long& data): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(data);
 }
 
 Integer::Integer(const std::string& data): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(data);
 }
 
 Integer::Integer(const BasicInteger& data): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(data);
 }
 
 Integer::Integer(const ArrayInteger& data): first_(nullptr)
@@ -28,11 +32,13 @@ Integer::Integer(const ArrayInteger& data): first_(nullptr)
 Integer::Integer(const NodeInteger& data): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(data);
 }
 
 Integer::Integer(const Integer& other): first_(nullptr)
 {
   current_size_ = 0;
+  this->setInteger(other);
 }
 
 void Integer::operator=(const int& data)
@@ -85,6 +91,7 @@ Integer::~Integer()
 
 void Integer::setInteger(const int& data)
 {
+  
 }
 
 void Integer::setInteger(const long& data)
@@ -93,6 +100,29 @@ void Integer::setInteger(const long& data)
 
 void Integer::setInteger(const std::string& data)
 {
+  std::string aux = data;
+  NodeInteger* actual = this->first_;
+  while (aux.size() != 0)
+  {
+    if (static_cast<short>(aux.size()) > NodeInteger::getMaximumSize() * BasicInteger::DigitNumber())
+    {
+      if (actual)
+      {
+        actual->next_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+        actual = actual->next_;
+      }
+      else
+      {
+        actual = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+      }
+      aux = aux.substr(0, aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber());
+    }
+    else
+    {
+      actual->next_ = new NodeInteger(aux.substr(aux.size() - NodeInteger::getMaximumSize() * BasicInteger::DigitNumber()));
+    }
+    this->current_size_ += 1;
+  }
 }
 
 void Integer::setInteger(const BasicInteger& data)
@@ -118,6 +148,8 @@ int Integer::getCurrentSize() const
 
 bool Integer::operator==(const Integer& other) const
 {
+  NodeInteger* actual = this->first_;
+
   return false;
 }
 
