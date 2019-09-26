@@ -87,15 +87,19 @@ void Integer::operator/=(const Integer&)
 
 Integer::~Integer()
 {
+
 }
 
 void Integer::setInteger(const int& data)
 {
-  
+  this->first_ = new NodeInteger(data);
+  current_size_ = 1;
 }
 
 void Integer::setInteger(const long& data)
 {
+  this->first_ = new NodeInteger(data);
+  current_size_ = 1;
 }
 
 void Integer::setInteger(const std::string& data)
@@ -127,23 +131,47 @@ void Integer::setInteger(const std::string& data)
 
 void Integer::setInteger(const BasicInteger& data)
 {
+  this->first_ = new NodeInteger(data);
+  current_size_ = 1;
 }
 
 void Integer::setInteger(const ArrayInteger& data)
 {
+  this->first_ = new NodeInteger(data);
+  current_size_ = 1;
 }
 
 void Integer::setInteger(const NodeInteger& data)
 {
+  this->first_ = new NodeInteger(data);
+  current_size_ = 1;
 }
 
 void Integer::setInteger(const Integer& other)
 {
+  NodeInteger* aux = this->first_;
+  NodeInteger* otheraux = other.first_;
+  
+  while (aux)
+  {
+    if (this->first_ == nullptr)
+    {
+      this->first_ = new NodeInteger(*otheraux);
+      aux = first_;
+    }
+    else
+    {
+      aux->next_ = new NodeInteger(*otheraux->next_);
+      aux = aux->next_;
+    }
+    otheraux = otheraux->next_;
+    current_size_++;
+  }
 }
 
 int Integer::getCurrentSize() const
 {
-  return this->current_size_;
+  return (this->current_size_);
 }
 
 bool Integer::operator==(const Integer& other) const
