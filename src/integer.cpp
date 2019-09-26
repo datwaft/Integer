@@ -188,23 +188,19 @@ void Integer::setInteger(const Integer& other)
 {
   NodeInteger* aux = this->first_;
   NodeInteger* otheraux = other.first_;
-  
+
+  if (!(this->first_))
+  {
+    this->first_ = new NodeInteger((*otheraux));
+    aux = first_;
+    otheraux = otheraux->next_;
+   
+  }
   while (otheraux)
   {
-    if (!(this->first_))
-    {
-      this->first_ = new NodeInteger((*otheraux));
-      aux = first_;
-    }
-    else
-    {
-      if (otheraux->next_)
-      {
-        aux->next_ = new NodeInteger(*(otheraux->next_));
-        aux = aux->next_;
-      }
-    }
+    aux->next_ = new NodeInteger(*otheraux);
     otheraux = otheraux->next_;
+    aux = aux->next_;
     current_size_++;
   }
 }
@@ -321,7 +317,9 @@ Integer Integer::operator+(const Integer& other) const
   {
     if (this_actual == nullptr)
     {
-      if(result == nullptr)
+      if (result == nullptr)
+      {
+      }
     }
     else if (other_actual == nullptr)
     {
