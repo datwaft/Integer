@@ -313,6 +313,8 @@ bool Integer::operator<=(const Integer& other) const
 
 Integer Integer::operator+(const Integer& other) const
 {
+  if (other == 0)
+    return *this;
   NodeInteger* this_actual = this->first_;
   NodeInteger* other_actual = other.first_;
   NodeInteger* result = nullptr;
@@ -369,12 +371,17 @@ Integer Integer::operator+(const Integer& other) const
       other_actual = other_actual->next_;
     }
   }
+  if (carriage != 0)
+    aux->next_ = new NodeInteger(carriage);
 
-  return Integer(result);
+  return result;
 }
 
 Integer Integer::operator-(const Integer& other) const
 {
+  if (other == 0)
+    return *this;
+
   return Integer();
 }
 
