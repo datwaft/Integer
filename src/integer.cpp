@@ -148,9 +148,19 @@ int Integer::getCurrentSize() const
 
 bool Integer::operator==(const Integer& other) const
 {
-  NodeInteger* actual = this->first_;
+  if (this->current_size_ != other.current_size_)
+    return false;
+  NodeInteger* actual_this = this->first_;
+  NodeInteger* actual_other = other.first_;
+  while (actual_this != nullptr)
+  {
+    if (*actual_this != *actual_other)
+      return false;
+    actual_this = actual_this->next_;
+    actual_other = actual_other->next_;
+  }
 
-  return false;
+  return true;
 }
 
 bool Integer::operator!=(const Integer& other) const
