@@ -189,11 +189,11 @@ void Integer::setInteger(const Integer& other)
   NodeInteger* aux = this->first_;
   NodeInteger* otheraux = other.first_;
   
-  while (aux)
+  while (otheraux)
   {
-    if (this->first_ == nullptr)
+    if (!(this->first_))
     {
-      this->first_ = new NodeInteger(*otheraux);
+      this->first_ = new NodeInteger((*otheraux));
       aux = first_;
     }
     else
