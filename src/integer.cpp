@@ -84,20 +84,32 @@ void Integer::operator=(const Integer& other)
   this->setInteger(other);
 }
 
-void Integer::operator+=(const Integer&)
+void Integer::operator+=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this + other;
+  this->Clear(aux);
 }
 
-void Integer::operator-=(const Integer&)
+void Integer::operator-=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this - other;
+  this->Clear(aux);
 }
 
-void Integer::operator*=(const Integer&)
+void Integer::operator*=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this * other;
+  this->Clear(aux);
 }
 
-void Integer::operator/=(const Integer&)
+void Integer::operator/=(const Integer& other)
 {
+  auto aux = this->first_;
+  *this = *this / other;
+  this->Clear(aux);
 }
 
 Integer::~Integer()
@@ -271,6 +283,7 @@ bool Integer::operator<=(const Integer& other) const
 
 Integer Integer::operator+(const Integer&) const
 {
+  return Integer();
 }
 
 Integer Integer::operator-(const Integer&) const
@@ -316,6 +329,17 @@ void Integer::Clear()
     delete aux;
   }
   this->current_size_ = 0;
+}
+
+void Integer::Clear(NodeInteger* node)
+{ 
+  NodeInteger* aux;
+  while (node != nullptr)
+  {
+    aux = node;
+    node = node->next_;
+    delete aux;
+  }
 }
 
 std::ostream& operator<<(std::ostream& out, const Integer& integer)
