@@ -54,6 +54,7 @@ public:
   std::string toString() const;
   static Integer Parse(std::string);
 private:
+  void Clear();
   int current_size_;
   NodeInteger* first_;
 };

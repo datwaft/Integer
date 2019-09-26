@@ -44,30 +44,44 @@ Integer::Integer(const Integer& other): first_(nullptr)
 
 void Integer::operator=(const int& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const long& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const std::string& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const BasicInteger& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const ArrayInteger& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const NodeInteger& data)
 {
+  this->Clear();
+  this->setInteger(data);
 }
 
 void Integer::operator=(const Integer& other)
 {
+  this->Clear();
+  this->setInteger(other);
 }
 
 void Integer::operator+=(const Integer&)
@@ -88,6 +102,7 @@ void Integer::operator/=(const Integer&)
 
 Integer::~Integer()
 {
+  this->Clear();
 }
 
 void Integer::setInteger(const int& data)
@@ -289,6 +304,18 @@ std::string Integer::toString() const
 Integer Integer::Parse(std::string string)
 {
   return Integer(string);
+}
+
+void Integer::Clear()
+{
+  NodeInteger* aux;
+  while (this->first_ != nullptr)
+  {
+    aux = this->first_;
+    this->first_ = this->first_->next_;
+    delete aux;
+  }
+  this->current_size_ = 0;
 }
 
 std::ostream& operator<<(std::ostream& out, const Integer& integer)
