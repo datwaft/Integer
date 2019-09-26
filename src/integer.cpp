@@ -312,21 +312,58 @@ Integer Integer::operator+(const Integer& other) const
 {
   NodeInteger* this_actual = this->first_;
   NodeInteger* other_actual = other.first_;
-  NodeInteger* result = nullptr;
+  NodeInteger* result;
+  NodeInteger* aux = nullptr;
+  NodeInteger carriage;
+  NodeInteger carriage1;
+  NodeInteger carriage2;
 
   while (this_actual != nullptr || other_actual != nullptr)
   {
     if (this_actual == nullptr)
     {
-      if(result == nullptr)
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(other_actual->Addition(carriage, &carriage));
+        result = aux;
+      }
+      else
+      {
+        aux->next_ = new NodeInteger(other_actual->Addition(carriage, &carriage));
+        aux = aux->next_;
+      }
+      other_actual = other_actual->next_;
     }
     else if (other_actual == nullptr)
     {
-
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(this_actual->Addition(carriage, &carriage));
+        result = aux;
+      }
+      else
+      {
+        aux->next_ = new NodeInteger(this_actual->Addition(carriage, &carriage));
+        aux = aux->next_;
+      }
+      this_actual = this_actual->next_;
     }
     else
     {
-
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
+        carriage = carriage1.Addition(carriage2);
+        result = aux;
+      }
+      else
+      {
+        aux->next_ = new NodeInteger(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
+        carriage = carriage1.Addition(carriage2);
+        aux = aux->next_;
+      }
+      this_actual = this_actual->next_;
+      other_actual = other_actual->next_;
     }
   }
 
