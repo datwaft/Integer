@@ -305,12 +305,14 @@ std::string Integer::toString() const
 {
   std::string result;
   NodeInteger* actual = this->first_;
-  while (actual->next_ != nullptr)
+  while (actual != nullptr)
   {
-    result += actual->fullString();
+    if (actual->next_ != nullptr)
+      result += actual->fullString();
+    else
+      result += actual->toString();
     actual = actual->next_;
   }
-  result += actual->toString();
   return result;
 }
 
