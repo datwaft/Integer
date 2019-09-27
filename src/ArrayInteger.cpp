@@ -246,9 +246,9 @@ ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
   for (short i = 0; i < maximum_size_; ++i)
   {
     if (*this > other)
-      result.data_[i] = data_[i].Addition(carriage).Addition(other.data_[i].NineComplement().Addition(i == 0 ? 1 : 0), &carriage);
+      result.data_[i] = data_[i].Addition(carriage).Addition(other.data_[i].Complement().Addition(i == 0 ? 1 : 0), &carriage);
     else
-      result.data_[i] = other.data_[i].Addition(carriage).Addition(data_[i].NineComplement().Addition(i == 0 ? 1 : 0), &carriage);
+      result.data_[i] = other.data_[i].Addition(carriage).Addition(data_[i].Complement().Addition(i == 0 ? 1 : 0), &carriage);
   }
   result.recalculateCurrentSize();
 
@@ -358,6 +358,17 @@ ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
   if (result > * this)
     return counter - 1;
   return counter;
+}
+
+ArrayInteger ArrayInteger::Complement() const
+{
+  ArrayInteger result;
+  for (short i = 0; i < this->current_size_; ++i)
+  {
+    result.data_[i] = this->data_[i].Complement();
+  }
+  result.recalculateCurrentSize();
+  return result;
 }
 
 std::string ArrayInteger::toString() const

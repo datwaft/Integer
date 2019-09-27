@@ -377,8 +377,64 @@ Integer Integer::operator-(const Integer& other) const
 {
   if (other == 0)
     return *this;
+  NodeInteger* this_actual = this->first_;
+  NodeInteger* other_actual = (other.Complement() + 1).first_;
+  NodeInteger* result = nullptr;
+  NodeInteger* aux = nullptr;
+  NodeInteger carriage;
+  NodeInteger carriage1;
+  NodeInteger carriage2;
 
-  return Integer();
+  while (this_actual != nullptr || other_actual != nullptr)
+  {
+    if (this_actual == nullptr)
+    {
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(other_actual->Addition(carriage, &carriage));
+        result = aux;
+      }
+      else
+      {
+        aux->next_ = new NodeInteger(other_actual->Addition(carriage, &carriage));
+        aux = aux->next_;
+      }
+      other_actual = other_actual->next_;
+    }
+    else if (other_actual == nullptr)
+    {
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(this_actual->Addition(carriage, &carriage));
+        result = aux;
+      }
+      else
+      {
+        aux->next_ = new NodeInteger(this_actual->Addition(carriage, &carriage));
+        aux = aux->next_;
+      }
+      this_actual = this_actual->next_;
+    }
+    else
+    {
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
+        carriage = carriage1.Addition(carriage2);
+        result = aux;
+      }
+      else
+      {
+        aux->next_ = new NodeInteger(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
+        carriage = carriage1.Addition(carriage2);
+        aux = aux->next_;
+      }
+      this_actual = this_actual->next_;
+      other_actual = other_actual->next_;
+    }
+  }
+
+  return result;
 }
 
 Integer Integer::operator*(const Integer& other) const
@@ -421,6 +477,28 @@ Integer::Integer(NodeInteger* node)
     aux = aux->next_;
     current_size_++;
   }
+}
+
+Integer Integer::Complement() const
+{
+  NodeInteger* actual = this->first_;
+  NodeInteger* result = nullptr;
+  NodeInteger* aux = nullptr;
+  while (actual != nullptr)
+  {
+    if (aux == nullptr)
+    {
+      aux = new NodeInteger(*actual);
+      result = aux;
+    }
+    else
+    {
+      aux->next_ = new NodeInteger(*actual);
+      aux = aux->next_;
+    }
+    actual = actual->next_;
+  }
+  return result;
 }
 
 void Integer::Clear()

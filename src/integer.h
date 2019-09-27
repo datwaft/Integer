@@ -51,6 +51,7 @@ public:
   Integer operator * (const Integer&) const;
   Integer operator / (const Integer&) const;
   friend std::ostream& operator<<(std::ostream&, const Integer&);
+  Integer Complement() const;
   std::string toString() const;
   static Integer Parse(const std::string&);
 private:
