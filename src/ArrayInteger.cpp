@@ -363,7 +363,7 @@ ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
 ArrayInteger ArrayInteger::Complement() const
 {
   ArrayInteger result;
-  for (short i = 0; i < this->current_size_; ++i)
+  for (short i = 0; i < this->maximum_size_; ++i)
   {
     result.data_[i] = this->data_[i].Complement();
   }
@@ -385,8 +385,9 @@ std::string ArrayInteger::fullString() const
 {
   std::string result;
   for (short i = 0; i < maximum_size_ - current_size_; i++) 
-    result += std::string(BasicInteger::DigitNumber(), '0'); 
-  result += data_[current_size_ - 1].fullString();
+    result += std::string(BasicInteger::DigitNumber(), '0');
+  if(current_size_ != 0)
+    result += data_[current_size_ - 1].fullString();
   for (short i = current_size_ - 2; i >= 0; --i)
     result += data_[i].fullString();
   return result;

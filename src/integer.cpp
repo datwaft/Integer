@@ -377,8 +377,9 @@ Integer Integer::operator-(const Integer& other) const
 {
   if (other == 0)
     return *this;
+  Integer temp = other.Complement() + 1;
   NodeInteger* this_actual = this->first_;
-  NodeInteger* other_actual = (other.Complement() + 1).first_;
+  NodeInteger* other_actual = temp.first_;
   NodeInteger* result = nullptr;
   NodeInteger* aux = nullptr;
   NodeInteger carriage;
@@ -488,12 +489,12 @@ Integer Integer::Complement() const
   {
     if (aux == nullptr)
     {
-      aux = new NodeInteger(*actual);
+      aux = new NodeInteger(actual->Complement());
       result = aux;
     }
     else
     {
-      aux->next_ = new NodeInteger(*actual);
+      aux->next_ = new NodeInteger(actual->Complement());
       aux = aux->next_;
     }
     actual = actual->next_;
