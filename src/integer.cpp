@@ -377,7 +377,7 @@ Integer Integer::operator-(const Integer& other) const
 {
   if (other == 0)
     return *this;
-  Integer temp = other.Complement() + 1;
+  Integer temp = other.Complement(this->current_size_) + 1;
   NodeInteger* this_actual = this->first_;
   NodeInteger* other_actual = temp.first_;
   NodeInteger* result = nullptr;
@@ -498,6 +498,37 @@ Integer Integer::Complement() const
       aux = aux->next_;
     }
     actual = actual->next_;
+  }
+  return result;
+}
+
+Integer Integer::Complement(int required_size) const
+{
+  NodeInteger* actual = this->first_;
+  NodeInteger* result = nullptr;
+  NodeInteger* aux = nullptr;
+  int actual_size = 0;
+  while (actual != nullptr || actual_size < required_size)
+  {
+    if (aux == nullptr)
+    {
+      if(actual == nullptr)
+        aux = new NodeInteger(std::string(NodeInteger::getMaximumSize() * BasicInteger::DigitNumber(), '9'));
+      else
+        aux = new NodeInteger(actual->Complement());
+      result = aux;
+    }
+    else
+    {
+      if(actual == nullptr)
+        aux->next_ = new NodeInteger(std::string(NodeInteger::getMaximumSize() * BasicInteger::DigitNumber(), '9'));
+      else
+        aux->next_ = new NodeInteger(actual->Complement());
+      aux = aux->next_;
+    }
+    if(actual != nullptr)
+      actual = actual->next_;
+    ++actual_size;
   }
   return result;
 }
