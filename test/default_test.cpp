@@ -36,14 +36,14 @@ int main()
   // cout << "complemento+1: " << endl << number.Complement() + 1 << endl << endl;
 
   Integer n1(string(600, '9'));
-  Integer n2(string(30, '7'));
+  Integer n2(string(300, '7'));
 
   cout << "n1: " << endl << n1 << endl << endl;
   // cout << "complemento: " << endl << n1.Complement() << endl << endl;
-  cout << "complemento+1: " << endl << n1.Complement() + 1 << endl << endl;
+  cout << "complemento+1: " << endl << n1.Complement(n2.getCurrentSize()) + 1 << endl << endl;
   cout << "n2: " << endl << n2 << endl << endl;
   // cout << "complemento: " << endl << n2.Complement() << endl << endl;
-  cout << "complemento+1: " << endl << n2.Complement() + 1 << endl << endl;
+  cout << "complemento+1: " << endl << n2.Complement(n1.getCurrentSize()) + 1 << endl << endl;
   cout << "n1 - n2: " << endl << n1 - n2 << endl << endl;
   cout << "n2 - n1: " << endl << n2 - n1 << endl << endl;
 

@@ -377,6 +377,8 @@ Integer Integer::operator-(const Integer& other) const
 {
   if (other == 0)
     return *this;
+  if (other > * this)
+    return other - *this;
   Integer temp = other.Complement(this->current_size_) + 1;
   NodeInteger* this_actual = this->first_;
   NodeInteger* other_actual = temp.first_;
