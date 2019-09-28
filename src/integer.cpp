@@ -465,32 +465,45 @@ Integer Integer::operator/(const Integer& other) const
       return std::to_string(result);
     }
 
-
-  std::string aux;
-  std::string auxdividend = dividend.substr(0,divisor.length()+1);
+ /* std::string aux;*/
+ 
   std::string resultstring = "0";
-  std::string counter;
+  std::string counter = "0";
+  std::string sobra = "0";
+  std::string resultadoF = "0";
   
-  if (dividend.length() < divisor.length())
+  while(dividend.size() > divisor.size())
   {
-    return 0;
+    std::string auxdividend = dividend.substr(0, divisor.length());
+
+    while (Parse(resultstring) < Parse(auxdividend))
+    {
+      resultstring = (Parse(resultstring) + Parse(divisor)).toString();
+      counter = (Parse(counter) + 1).toString();
+
+      std::cout << Parse(resultstring).toString() << "\n";
+      system("pause");
+      std::cout << Parse(auxdividend).toString() << "\n";
+      system("pause");
+
+
+    }
+    resultstring = (Parse(resultstring) - Parse(divisor)).toString();
+      counter = (Parse(counter) - 1).toString();
+
+    sobra = resultstring = (Parse(divisor) - Parse(resultstring)).toString();
+
+    dividend = sobra + dividend.substr(divisor.size() + 1, dividend.size() - 1);
+
+    resultadoF = resultadoF + counter;
+
+    counter = "0";
+    resultstring = "0";
+
   }
+  return (resultadoF + "0");
 
-
-  while (Parse(resultstring) < Parse(auxdividend))
-  {
-    resultstring = (Parse(resultstring) + Parse(divisor)).toString();
-    counter = (Parse(counter) + 1).toString();
-  }
-  resultstring = (Parse(resultstring) - Parse(divisor)).toString();
-
-  //std::string auxiliars = (Parse(dividend) - Parse(resultstring)).toString(); necesito la resta
-
-  auxdividend = auxdividend.substr(divisor.length()+1, dividend.length() - 1);
-
- /* auxdividend = auxiliars + auxdividend;*/
-  return (counter + (Parse(auxdividend) / other).toString());
-
+  
 
 }
 
