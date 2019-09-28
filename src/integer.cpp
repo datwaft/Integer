@@ -494,13 +494,11 @@ Integer Integer::operator/(const Integer& other) const
       system("pause");
       std::cout << Parse(auxdividend).toString() << "\n";
       system("pause");*/
-
-
     }
     resultstring = (Parse(resultstring) - Parse(divisor)).toString();
       counter = (Parse(counter) - 1).toString();
 
-    sobra = resultstring = (Parse(divisor) - Parse(resultstring)).toString();
+    sobra = /*resultstring =*/ (Parse(auxdividend) - Parse(resultstring)).toString();
 
     dividend = sobra + dividend.substr(divisor.size() + 1, dividend.size() - 1);
 
@@ -511,8 +509,6 @@ Integer Integer::operator/(const Integer& other) const
 
   }
   return (resultadoF + "0");
-
-  
 
 }
 
