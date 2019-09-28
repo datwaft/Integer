@@ -502,20 +502,29 @@ Integer Integer::operator-(const Integer& other) const
     else
     {
       Integer result;
-      if(*this > other)
+      if (*this > other)
+      {
         result = *this + other.Complement(this->current_size_) + 1;
+        result.sign_ = POSITIVE;
+      }
       else
+      {
         result = other + this->Complement(this->current_size_) + 1;
+        result.sign_ = NEGATIVE;
+      }
 
-      result = result.toString().substr(1);
+      if (result.sign_ != NEGATIVE)
+      {
+        result = result.toString().substr(1);
+      }
+      else
+      {
+        result = "-" + result.toString().substr(2); 
+      }
       result.DeleteLeftPadding();
       
       if (result == 0)
         result.sign_ = NEUTRAL;
-      else if (*this < other)
-        result.sign_ = NEGATIVE;
-      else
-        result.sign_ = POSITIVE;
 
       return result;
     }
