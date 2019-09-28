@@ -33,7 +33,7 @@ class BasicInteger
   BasicInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
   BasicInteger Division(const BasicInteger&) const;
   static Base MaximumNumberPlusOne();
-  BasicInteger NineComplement() const;
+  BasicInteger Complement() const;
   std::string toString() const;
   std::string fullString() const;
  private:

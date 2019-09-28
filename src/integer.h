@@ -51,14 +51,18 @@ public:
   Integer operator * (const Integer&) const;
   Integer operator / (const Integer&) const;
   friend std::ostream& operator<<(std::ostream&, const Integer&);
+  Integer Complement() const;
+  Integer Complement(int) const;
   std::string toString() const;
   static Integer Parse(const std::string&);
 private:
   Integer(NodeInteger*);
   void Clear();
   void Clear(NodeInteger*);
+  void deleteLeftPadding();
   int current_size_;
   NodeInteger* first_;
+  NodeInteger* last_;
 };
 
 #endif // INTEGER_SRC_INTEGER_H_

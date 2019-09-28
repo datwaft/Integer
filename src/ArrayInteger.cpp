@@ -89,6 +89,8 @@ void ArrayInteger::setInteger(const int& integer)
     data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
     aux = aux / BasicInteger::MaximumNumberPlusOne();
   }
+  if (current_size_ == 1 && data_[0] == 0)
+    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const long& integer)
@@ -100,6 +102,8 @@ void ArrayInteger::setInteger(const long& integer)
     data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
     aux = aux / BasicInteger::MaximumNumberPlusOne();
   }
+  if (current_size_ == 1 && data_[0] == 0)
+    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const std::string& string)
@@ -119,6 +123,9 @@ void ArrayInteger::setInteger(const std::string& string)
       aux.clear();
     }
   }
+  recalculateCurrentSize();
+  if (current_size_ == 1 && data_[0] == 0)
+    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const BasicInteger& data)
@@ -246,9 +253,9 @@ ArrayInteger ArrayInteger::Substraction(const ArrayInteger& other) const
   for (short i = 0; i < maximum_size_; ++i)
   {
     if (*this > other)
-      result.data_[i] = data_[i].Addition(carriage).Addition(other.data_[i].NineComplement().Addition(i == 0 ? 1 : 0), &carriage);
+      result.data_[i] = data_[i].Addition(carriage).Addition(other.data_[i].Complement().Addition(i == 0 ? 1 : 0), &carriage);
     else
-      result.data_[i] = other.data_[i].Addition(carriage).Addition(data_[i].NineComplement().Addition(i == 0 ? 1 : 0), &carriage);
+      result.data_[i] = other.data_[i].Addition(carriage).Addition(data_[i].Complement().Addition(i == 0 ? 1 : 0), &carriage);
   }
   result.recalculateCurrentSize();
 
@@ -360,6 +367,17 @@ ArrayInteger ArrayInteger::Division(const ArrayInteger& other) const
   return counter;
 }
 
+ArrayInteger ArrayInteger::Complement() const
+{
+  ArrayInteger result;
+  for (short i = 0; i < this->maximum_size_; ++i)
+  {
+    result.data_[i] = this->data_[i].Complement();
+  }
+  result.recalculateCurrentSize();
+  return result;
+}
+
 std::string ArrayInteger::toString() const
 {
   if (current_size_ == 0)
@@ -374,8 +392,9 @@ std::string ArrayInteger::fullString() const
 {
   std::string result;
   for (short i = 0; i < maximum_size_ - current_size_; i++) 
-    result += std::string(BasicInteger::DigitNumber(), '0'); 
-  result += data_[current_size_ - 1].fullString();
+    result += std::string(BasicInteger::DigitNumber(), '0');
+  if(current_size_ != 0)
+    result += data_[current_size_ - 1].fullString();
   for (short i = current_size_ - 2; i >= 0; --i)
     result += data_[i].fullString();
   return result;

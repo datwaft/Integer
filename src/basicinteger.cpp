@@ -135,7 +135,7 @@ BasicInteger::Base BasicInteger::MaximumNumberPlusOne()
   return static_cast<Base>(pow(10, digitnumber_));
 }
 
-BasicInteger BasicInteger::NineComplement() const
+BasicInteger BasicInteger::Complement() const
 {
   return MaximumNumberPlusOne() - 1 - this->data_;
 }

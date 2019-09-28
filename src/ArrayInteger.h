@@ -43,6 +43,7 @@ class ArrayInteger
 	ArrayInteger Multiplication(const ArrayInteger&, ArrayInteger* = nullptr) const;
 	ArrayInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
 	ArrayInteger Division(const ArrayInteger&) const;
+  ArrayInteger Complement() const;
   std::string toString() const;
   std::string fullString() const; 
  protected:
