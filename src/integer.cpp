@@ -404,7 +404,46 @@ Integer Integer::operator*(const Integer& other) const
 
 Integer Integer::operator/(const Integer& other) const
 {
-  return Integer();
+  
+
+  std::string dividend = this->toString();
+  std::string divisor = other.toString();
+  long long result;
+
+  if (dividend.size() <= 18)
+    if (divisor.size() <= 18)
+    {
+      result  = (std::stoll(dividend) / std::stoll(divisor));
+      return std::to_string(result);
+    }
+
+
+  std::string aux;
+  std::string auxdividend = dividend.substr(0,divisor.length()+1);
+  std::string resultstring = "0";
+  std::string counter;
+  
+  if (dividend.length() < divisor.length())
+  {
+    return 0;
+  }
+
+
+  while (Parse(resultstring) < Parse(auxdividend))
+  {
+    resultstring = (Parse(resultstring) + Parse(divisor)).toString();
+    counter = (Parse(counter) + 1).toString();
+  }
+  resultstring = (Parse(resultstring) - Parse(divisor)).toString();
+
+  //std::string auxiliars = (Parse(dividend) - Parse(resultstring)).toString(); necesito la resta
+
+  auxdividend = auxdividend.substr(divisor.length()+1, dividend.length() - 1);
+
+ /* auxdividend = auxiliars + auxdividend;*/
+  return (counter + (Parse(auxdividend) / other).toString());
+
+
 }
 
 std::string Integer::toString() const
