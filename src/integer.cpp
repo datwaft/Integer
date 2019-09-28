@@ -390,8 +390,6 @@ Integer Integer::operator-(const Integer& other) const
 {
   if (other == 0)
     return *this;
-  if (other > * this)
-    return other - *this;
   Integer result = *this + other.Complement(this->current_size_) + 1;
   
   result = result.toString().substr(1);
@@ -402,8 +400,6 @@ Integer Integer::operator-(const Integer& other) const
 
 Integer Integer::operator*(const Integer& other) const
 {
-  std::cout << *this << std::endl;
-  std::cout << other << std::endl << std::endl;
   if (this->current_size_ == 1 && this->first_->getCurrentSize() == 1 || other.current_size_ == 1 && other.first_->getCurrentSize() == 1)
   {
     NodeInteger* actual;
@@ -451,26 +447,16 @@ Integer Integer::operator*(const Integer& other) const
   int m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
   int m2 = m / 2;
   
-  std::cout << "m: " << m << std::endl;
-  std::cout << "m2: " << m2 << std::endl;
-
   Integer high1, low1;
   this->Split(&high1, &low1, m2);
   Integer high2, low2;
   other.Split(&high2, &low2, m2);
 
   Integer z0 = low1 * low2;
-  std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
-  std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
-  std::cout << "z2: " << z2 << std::endl;
 
-  Integer part1 = z2.AddRightPadding(m2 * 2);
-  std::cout << "part1: " << part1 << std::endl;
-  Integer part2 = (z1 - z2 - z0);
-  std::cout << "part2: " << part2 << std::endl;
-  return part1 + part2 + z0;
+  return z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
 }
 
 Integer Integer::operator/(const Integer& other) const
