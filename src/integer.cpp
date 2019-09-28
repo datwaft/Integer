@@ -401,16 +401,33 @@ Integer Integer::operator/(const Integer& other) const
       return std::to_string(result);
     }
 
+
   std::string aux;
-  std::string auxdivisor;
+  std::string auxdividend = dividend.substr(0,divisor.length()+1);
+  std::string resultstring = "0";
+  std::string counter;
   
-  std::string resultstring;
+  if (dividend.length() < divisor.length())
+  {
+    return 0;
+  }
 
 
+  while (Parse(resultstring) < Parse(auxdividend))
+  {
+    resultstring = (Parse(resultstring) + Parse(divisor)).toString();
+    counter = (Parse(counter) + 1).toString();
+  }
+  resultstring = (Parse(resultstring) - Parse(divisor)).toString();
+
+  //std::string auxiliars = (Parse(dividend) - Parse(resultstring)).toString(); necesito la resta
+
+  auxdividend = auxdividend.substr(divisor.length()+1, dividend.length() - 1);
+
+ /* auxdividend = auxiliars + auxdividend;*/
+  return (counter + (Parse(auxdividend) / other).toString());
 
 
-
-  return Integer();
 }
 
 std::string Integer::toString() const
