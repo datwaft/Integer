@@ -6,6 +6,7 @@
 #include "basicinteger.h"
 #include "arrayinteger.h"
 #include "nodeinteger.h"
+#include "sign.h"
 
 #define ZERO Integer(0);
 #define ONE Integer(0);
@@ -59,14 +60,16 @@ public:
   std::string toString() const;
   static Integer Parse(const std::string&);
 private:
-  Integer(NodeInteger*);
+  Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
   void Clear(NodeInteger*);
   void DeleteLeftPadding();
   Integer AppendToRight(Integer) const;
+  Integer Neutral() const;
   int current_size_;
   NodeInteger* first_;
   NodeInteger* last_;
+  Sign sign_;
 };
 
 #endif // INTEGER_SRC_INTEGER_H_

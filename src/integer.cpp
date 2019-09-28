@@ -116,6 +116,12 @@ void Integer::setInteger(const int& data)
   this->first_ = new NodeInteger(data);
   this->last_ = this->first_;
   current_size_ = 1;
+  if (data < 0)
+    this->sign_ = Sign::NEGATIVE;
+  else if (data == 0)
+    this->sign_ = Sign::NEUTRAL;
+  else
+    this->sign_ = Sign::POSITIVE;
 }
 
 void Integer::setInteger(const long& data)
@@ -123,11 +129,26 @@ void Integer::setInteger(const long& data)
   this->first_ = new NodeInteger(data);
   this->last_ = this->first_;
   current_size_ = 1;
+  if (data < 0)
+    this->sign_ = Sign::NEGATIVE;
+  else if (data == 0)
+    this->sign_ = Sign::NEUTRAL;
+  else
+    this->sign_ = Sign::POSITIVE;
 }
 
 void Integer::setInteger(const std::string& data)
 {
   std::string aux = data;
+  if (aux.empty())
+    setInteger(0);
+  if (!aux.empty() && aux[0] == '-')
+  {
+    this->sign_ = NEGATIVE;
+    aux = aux.substr(1);
+  }
+  else
+    this->sign_ = POSITIVE;
   NodeInteger* actual = this->first_;
   while (aux.size() != 0)
   {
@@ -162,6 +183,8 @@ void Integer::setInteger(const std::string& data)
     }
     this->current_size_ += 1;
   }
+  if (*this == 0)
+    this->sign_ = NEUTRAL;
 }
 
 void Integer::setInteger(const BasicInteger& data)
@@ -169,6 +192,10 @@ void Integer::setInteger(const BasicInteger& data)
   this->first_ = new NodeInteger(data);
   this->last_ = this->first_;
   current_size_ = 1;
+  if (data == 0)
+    this->sign_ = Sign::NEUTRAL;
+  else
+    this->sign_ = Sign::POSITIVE;
 }
 
 void Integer::setInteger(const ArrayInteger& data)
@@ -176,6 +203,11 @@ void Integer::setInteger(const ArrayInteger& data)
   this->first_ = new NodeInteger(data);
   this->last_ = this->first_;
   current_size_ = 1;
+
+  if (data == 0)
+    this->sign_ = Sign::NEUTRAL;
+  else
+    this->sign_ = Sign::POSITIVE;
 }
 
 void Integer::setInteger(const NodeInteger& data)
@@ -183,12 +215,18 @@ void Integer::setInteger(const NodeInteger& data)
   this->first_ = new NodeInteger(data);
   this->last_ = this->first_;
   current_size_ = 1;
+
+  if (data == 0)
+    this->sign_ = Sign::NEUTRAL;
+  else
+    this->sign_ = Sign::POSITIVE;
 }
 
 void Integer::setInteger(const Integer& other)
 {
   NodeInteger* aux = this->first_;
   NodeInteger* otheraux = other.first_;
+  this->sign_ = other.sign_;
 
   if (!(this->first_))
   {
@@ -218,6 +256,8 @@ int Integer::getDigits() const
 
 bool Integer::operator==(const Integer& other) const
 {
+  if (this->sign_ != other.sign_)
+    return false;
   if (this->getDigits() != other.getDigits())
     return false;
   NodeInteger* actual_this = this->first_;
@@ -239,144 +279,200 @@ bool Integer::operator!=(const Integer& other) const
 
 bool Integer::operator>(const Integer& other) const
 {
-  if(this->getDigits() < other.getDigits())
-    return false;
-  if (this->getDigits() > other.getDigits())
-    return true;
-
-  NodeInteger* actual_this = this->first_;
-  NodeInteger* actual_other = other.first_;
-  while (actual_this != nullptr)
+  if (this->sign_ != NEGATIVE && other.sign_ != NEGATIVE)
   {
-    if (*actual_this <= *actual_other)
+    if (this->getDigits() < other.getDigits())
       return false;
-    actual_this = actual_this->getNext();
-    actual_other = actual_other->getNext();
+    if (this->getDigits() > other.getDigits())
+      return true;
+
+    NodeInteger* actual_this = this->first_;
+    NodeInteger* actual_other = other.first_;
+    while (actual_this != nullptr)
+    {
+      if (*actual_this <= *actual_other)
+        return false;
+      actual_this = actual_this->getNext();
+      actual_other = actual_other->getNext();
+    }
+    return true;
   }
-  return true;
+  if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+    return false;
+  if (other.sign_ == NEGATIVE && this->sign_ != NEGATIVE)
+    return true;
+  return this->Neutral() < other.Neutral();
 }
 
 bool Integer::operator<(const Integer& other) const
 {
-  if(this->getDigits() > other.getDigits())
-    return false;
-  if (this->getDigits() < other.getDigits())
-    return true;
-
-  NodeInteger* actual_this = this->first_;
-  NodeInteger* actual_other = other.first_;
-  while (actual_this != nullptr)
+  if (this->sign_ != NEGATIVE && other.sign_ != NEGATIVE)
   {
-    if (*actual_this >= *actual_other)
+    if (this->getDigits() < other.getDigits())
+      return true;
+    if (this->getDigits() > other.getDigits())
       return false;
-    actual_this = actual_this->getNext();
-    actual_other = actual_other->getNext();
+
+    NodeInteger* actual_this = this->first_;
+    NodeInteger* actual_other = other.first_;
+    while (actual_this != nullptr)
+    {
+      if (*actual_this <= *actual_other)
+        return false;
+      actual_this = actual_this->getNext();
+      actual_other = actual_other->getNext();
+    }
+    return true;
   }
-  return true;
+  if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+    return true;
+  if (other.sign_ == NEGATIVE && this->sign_ != NEGATIVE)
+    return false;
+  return this->Neutral() < other.Neutral();
 }
 
 bool Integer::operator>=(const Integer& other) const
 {
-  if(this->getDigits() < other.getDigits())
-    return false;
-  if (this->getDigits() > other.getDigits())
-    return true;
-
-  NodeInteger* actual_this = this->first_;
-  NodeInteger* actual_other = other.first_;
-  while (actual_this != nullptr)
+  if (this->sign_ != NEGATIVE && other.sign_ != NEGATIVE)
   {
-    if (*actual_this < *actual_other)
+    if (this->getDigits() < other.getDigits())
       return false;
-    actual_this = actual_this->getNext();
-    actual_other = actual_other->getNext();
+    if (this->getDigits() > other.getDigits())
+      return true;
+
+    NodeInteger* actual_this = this->first_;
+    NodeInteger* actual_other = other.first_;
+    while (actual_this != nullptr)
+    {
+      if (*actual_this < *actual_other)
+        return false;
+      actual_this = actual_this->getNext();
+      actual_other = actual_other->getNext();
+    }
+    return true;
   }
-  return true;
+  if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+    return false;
+  if (other.sign_ == NEGATIVE && this->sign_ != NEGATIVE)
+    return true;
+  return this->Neutral() <= other.Neutral();
 }
 
 bool Integer::operator<=(const Integer& other) const
 {
-  if(this->getDigits() > other.getDigits())
-    return false;
-  if (this->getDigits() < other.getDigits())
-    return true;
-
-  NodeInteger* actual_this = this->first_;
-  NodeInteger* actual_other = other.first_;
-  while (actual_this != nullptr)
+  if (this->sign_ != NEGATIVE && other.sign_ != NEGATIVE)
   {
-    if (*actual_this > *actual_other)
+    if (this->getDigits() < other.getDigits())
+      return true;
+    if (this->getDigits() > other.getDigits())
       return false;
-    actual_this = actual_this->getNext();
-    actual_other = actual_other->getNext();
+
+    NodeInteger* actual_this = this->first_;
+    NodeInteger* actual_other = other.first_;
+    while (actual_this != nullptr)
+    {
+      if (*actual_this < *actual_other)
+        return false;
+      actual_this = actual_this->getNext();
+      actual_other = actual_other->getNext();
+    }
+    return true;
   }
-  return true;
+  if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+    return true;
+  if (other.sign_ == NEGATIVE && this->sign_ != NEGATIVE)
+    return false;
+  return this->Neutral() >= other.Neutral();
 }
 
 Integer Integer::operator+(const Integer& other) const
 {
   if (other == 0)
     return *this;
-  NodeInteger* this_actual = this->first_;
-  NodeInteger* other_actual = other.first_;
-  NodeInteger* result = nullptr;
-  NodeInteger* aux = nullptr;
-  NodeInteger carriage;
-  NodeInteger carriage1;
-  NodeInteger carriage2;
 
-  while (this_actual != nullptr || other_actual != nullptr)
+  if (this->sign_ == NEGATIVE)
   {
-    if (this_actual == nullptr)
+    if (other.sign_ == NEGATIVE)
     {
-      if (aux == nullptr)
-      {
-        aux = new NodeInteger(other_actual->Addition(carriage, &carriage));
-        result = aux;
-      }
-      else
-      {
-        aux->createNext(other_actual->Addition(carriage, &carriage));
-        aux = aux->getNext();
-      }
-      other_actual = other_actual->getNext();
-    }
-    else if (other_actual == nullptr)
-    {
-      if (aux == nullptr)
-      {
-        aux = new NodeInteger(this_actual->Addition(carriage, &carriage));
-        result = aux;
-      }
-      else
-      {
-        aux->createNext(this_actual->Addition(carriage, &carriage));
-        aux = aux->getNext();
-      }
-      this_actual = this_actual->getNext();
+      Integer result = this->Neutral() + other.Neutral();
+      result.sign_ = NEGATIVE;
+      return result;
     }
     else
     {
-      if (aux == nullptr)
-      {
-        aux = new NodeInteger(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
-        carriage = carriage1.Addition(carriage2);
-        result = aux;
-      }
-      else
-      {
-        aux->createNext(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
-        carriage = carriage1.Addition(carriage2);
-        aux = aux->getNext();
-      }
-      this_actual = this_actual->getNext();
-      other_actual = other_actual->getNext();
+      return other - this->Neutral();
     }
   }
-  if (carriage != 0)
-    aux->createNext(carriage);
+  else
+  {
+    if (other.sign_ == NEGATIVE)
+    {
+      return *this - other.Neutral();
+    }
+    else
+    {
+      NodeInteger* this_actual = this->first_;
+      NodeInteger* other_actual = other.first_;
+      NodeInteger* result = nullptr;
+      NodeInteger* aux = nullptr;
+      NodeInteger carriage;
+      NodeInteger carriage1;
+      NodeInteger carriage2;
 
-  return result;
+      while (this_actual != nullptr || other_actual != nullptr)
+      {
+        if (this_actual == nullptr)
+        {
+          if (aux == nullptr)
+          {
+            aux = new NodeInteger(other_actual->Addition(carriage, &carriage));
+            result = aux;
+          }
+          else
+          {
+            aux->createNext(other_actual->Addition(carriage, &carriage));
+            aux = aux->getNext();
+          }
+          other_actual = other_actual->getNext();
+        }
+        else if (other_actual == nullptr)
+        {
+          if (aux == nullptr)
+          {
+            aux = new NodeInteger(this_actual->Addition(carriage, &carriage));
+            result = aux;
+          }
+          else
+          {
+            aux->createNext(this_actual->Addition(carriage, &carriage));
+            aux = aux->getNext();
+          }
+          this_actual = this_actual->getNext();
+        }
+        else
+        {
+          if (aux == nullptr)
+          {
+            aux = new NodeInteger(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
+            carriage = carriage1.Addition(carriage2);
+            result = aux;
+          }
+          else
+          {
+            aux->createNext(this_actual->Addition(*other_actual, &carriage1).Addition(carriage, &carriage2));
+            carriage = carriage1.Addition(carriage2);
+            aux = aux->getNext();
+          }
+          this_actual = this_actual->getNext();
+          other_actual = other_actual->getNext();
+        }
+      }
+      if (carriage != 0)
+        aux->createNext(carriage);
+
+      return result;
+    }
+  }
 }
 
 Integer Integer::operator-(const Integer& other) const
@@ -384,13 +480,46 @@ Integer Integer::operator-(const Integer& other) const
   if (other == 0)
     return *this;
 
-  Integer result = *this + other.Complement(this->current_size_) + 1;
+  if (this->sign_ == NEGATIVE)
+  {
+    if (other.sign_ == NEGATIVE)
+    {
+      return *this - other.Neutral();
+    }
+    else
+    {
+      Integer result = this->Neutral() + other.Neutral();
+      result.sign_ = NEGATIVE;
+      return result;
+    }
+  }
+  else
+  {
+    if (other.sign_ == NEGATIVE)
+    {
+      return *this + other.Neutral();
+    }
+    else
+    {
+      Integer result;
+      if(*this > other)
+        result = *this + other.Complement(this->current_size_) + 1;
+      else
+        result = other + this->Complement(this->current_size_) + 1;
 
-  result = result.toString().substr(1);
-  result.DeleteLeftPadding();
-  
+      result = result.toString().substr(1);
+      result.DeleteLeftPadding();
+      
+      if (result == 0)
+        result.sign_ = NEUTRAL;
+      else if (*this < other)
+        result.sign_ = NEGATIVE;
+      else
+        result.sign_ = POSITIVE;
 
-  return result;
+      return result;
+    }
+  }
 }
 
 Integer Integer::operator*(const Integer& other) const
@@ -437,6 +566,12 @@ Integer Integer::operator*(const Integer& other) const
     }
     Integer result_aux = result;
     result_aux.DeleteLeftPadding();
+
+    if (this->sign_ != NEGATIVE && other.sign_ == NEGATIVE)
+      result_aux.sign_ = NEGATIVE;
+    else if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+      result_aux.sign_ = NEGATIVE;
+
     return result_aux;
   }
  
@@ -444,7 +579,7 @@ Integer Integer::operator*(const Integer& other) const
   // std::cout << "other = " << other << "\tsize: " << other.getDigits() << std::endl;
 
   int m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
-  int m2 = m / 2;
+  int m2 = static_cast<int>(floor((double)(m) / 2));
 
   // std::cout << "m: " << m << std::endl;
   // std::cout << "m2: " << m2 << std::endl;
@@ -458,15 +593,31 @@ Integer Integer::operator*(const Integer& other) const
 
   Integer z0 = low1 * low2;
   // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
-  std::cout << "z0: " << z0 << std::endl;
+  // std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
-  std::cout << "z1: " << z1 << std::endl;
+  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
+  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
+  // std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
-  std::cout << "z2: " << z2 << std::endl;
+  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
+  // std::cout << "z2: " << z2 << std::endl;
   
+  std::cout << "m2: " << m2 << std::endl;
+  std::cout << "z0: " << z0 << std::endl;
+  std::cout << "z1: " << z1 << std::endl;
+  std::cout << "z2: " << z2 << std::endl;
+  std::cout << z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0 << std::endl;
   // std::cout << "z2: " << z2 << std::endl;
   // std::cout << "z2 * 10**(m2*2): " << z2.AddRightPadding(m2 * 2) << std::endl;
-  return z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
+
+  Integer result_aux = z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
+
+  if (this->sign_ != NEGATIVE && other.sign_ == NEGATIVE)
+    result_aux.sign_ = NEGATIVE;
+  else if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+    result_aux.sign_ = NEGATIVE;
+
+  return result_aux;
 }
 
 Integer Integer::operator/(const Integer& other) const
@@ -534,6 +685,8 @@ std::string Integer::toString() const
       result = actual->toString() + result;
     actual = actual->getNext();
   }
+  if (this->sign_ == NEGATIVE)
+    result = "-" + result;
   return result;
 }
 
@@ -542,7 +695,7 @@ Integer Integer::Parse(const std::string& string)
   return Integer(string);
 }
 
-Integer::Integer(NodeInteger* node)
+Integer::Integer(NodeInteger* node, Sign sign)
 {
   this->current_size_ = 0;
   this->first_ = node;
@@ -555,6 +708,12 @@ Integer::Integer(NodeInteger* node)
     if (aux && aux->getNext() == nullptr)
       this->last_ = aux;
   }
+  if (*this == 0)
+    this->sign_ = NEUTRAL;
+  else if (sign != NEUTRAL)
+    this->sign_ = sign;
+  else
+    this->sign_ = POSITIVE;
 }
 
 Integer Integer::Complement() const
@@ -612,7 +771,6 @@ Integer Integer::Complement(int required_size) const
 
 void Integer::Split(Integer* high, Integer* low, int pivot) const
 {
-  pivot += 1;
   std::string string = this->toString();
   if (pivot >= static_cast<int>(string.length()))
   {
@@ -628,7 +786,7 @@ void Integer::Split(Integer* high, Integer* low, int pivot) const
 
 Integer Integer::AddRightPadding(int padding) const
 {
-  return this->toString() + std::string(padding, '0');
+  return (this->sign_ == NEGATIVE ? "-" : "") + this->toString() + std::string(padding, '0');
 }
 
 void Integer::Clear()
@@ -668,6 +826,13 @@ void Integer::DeleteLeftPadding()
 Integer Integer::AppendToRight(Integer to_append) const
 {
   return to_append.toString() + this->toString();
+}
+
+Integer Integer::Neutral() const
+{
+  Integer aux = *this;
+  aux.sign_ = NEUTRAL;
+  return aux;
 }
 
 std::ostream& operator<<(std::ostream& out, const Integer& integer)

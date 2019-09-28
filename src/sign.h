@@ -8,7 +8,8 @@
 enum Sign
 {
   POSITIVE,
-  NEGATIVE
+  NEGATIVE,
+  NEUTRAL
 };
 
 #endif // INTEGER_SRC_SIGN_H_
