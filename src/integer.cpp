@@ -583,39 +583,18 @@ Integer Integer::operator*(const Integer& other) const
 
     return result_aux;
   }
- 
-  // std::cout << "*this = " << *this << "\tsize: " << this->getDigits() << std::endl;
-  // std::cout << "other = " << other << "\tsize: " << other.getDigits() << std::endl;
 
   int m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
   int m2 = static_cast<int>(floor((double)(m) / 2));
 
-  // std::cout << "m: " << m << std::endl;
-  // std::cout << "m2: " << m2 << std::endl;
-
   Integer high1, low1;
   this->Split(&high1, &low1, m2);
-  // std::cout << "high1: " << high1 << "\tlow1: " << low1 << std::endl;
   Integer high2, low2;
   other.Split(&high2, &low2, m2);
-  // std::cout << "high2: " << high2 << "\tlow2: " << low2 << std::endl;
 
   Integer z0 = low1 * low2;
-  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
-  // std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
-  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
-  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
-  // std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
-  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
-  // std::cout << "z2: " << z2 << std::endl;
-  
-  std::cout << "m2: " << m2 << std::endl;
-  std::cout << "z0: " << z0 << std::endl;
-  std::cout << "z1: " << z1 << std::endl;
-  std::cout << "z2: " << z2 << std::endl;
-  std::cout << (z1 - z2 - z0) << std::endl;
 
   Integer result_aux = z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
 
@@ -778,7 +757,6 @@ Integer Integer::Complement(int required_size) const
 
 void Integer::Split(Integer* high, Integer* low, int pivot) const
 {
-  pivot += 1;
   std::string string = this->toString();
   if (pivot >= static_cast<int>(string.length()))
   {
@@ -787,8 +765,8 @@ void Integer::Split(Integer* high, Integer* low, int pivot) const
   }
   else
   {
-    *high = string.substr(0, pivot);
-    *low = string.substr(pivot);
+    *high = string.substr(0, string.size() - pivot);
+    *low = string.substr(string.size() - pivot);
   }
 }
 
