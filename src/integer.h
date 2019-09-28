@@ -40,6 +40,7 @@ public:
   void setInteger(const NodeInteger&);
   void setInteger(const Integer&);
   int getCurrentSize() const;
+  int getDigits() const;
   bool operator == (const Integer&) const;
   bool operator != (const Integer&) const;
   bool operator > (const Integer&) const;

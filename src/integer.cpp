@@ -211,6 +211,17 @@ int Integer::getCurrentSize() const
   return this->current_size_;
 }
 
+int Integer::getDigits() const
+{
+  int contador = 0;
+  NodeInteger* actual = this->first_;
+  while (actual != nullptr)
+  {
+    contador += actual->getDigits();
+  }
+  return contador;
+}
+
 bool Integer::operator==(const Integer& other) const
 {
   if (this->current_size_ != other.current_size_)
@@ -391,7 +402,49 @@ Integer Integer::operator-(const Integer& other) const
 
 Integer Integer::operator*(const Integer& other) const
 {
-  return Integer();
+  if (this->current_size_ == 1 && this->first_->getCurrentSize() == 1 || other.current_size_ == 1 && other.first_->getCurrentSize() == 1)
+  {
+    NodeInteger* actual;
+    BasicInteger operand;
+    if (this->current_size_ == 1 && this->first_->getCurrentSize() == 1)
+    {
+      actual = other.first_;
+      operand = this->first_->First();
+    }
+    else
+    {
+      actual = this->first_;
+      operand = other.first_->First();
+    }
+    NodeInteger* result = nullptr;
+    NodeInteger* aux = nullptr;
+    NodeInteger carriage;
+    BasicInteger carriage_aux1;
+    NodeInteger carriage_aux2;
+
+    while (actual != nullptr)
+    {
+      if (aux == nullptr)
+      {
+        aux = new NodeInteger(actual->Multiplication(operand, &carriage_aux1).Addition(carriage, &carriage_aux2));
+        carriage = carriage_aux2.Addition(carriage_aux1);
+        result = aux;
+      }
+      else
+      {
+        aux = aux->createNext(actual->Multiplication(operand, &carriage_aux1).Addition(carriage, &carriage_aux2));
+        carriage = carriage_aux2.Addition(carriage_aux1);
+      }
+      actual = actual->getNext();
+    }
+    if (carriage != 0)
+      aux->createNext(carriage);
+    Integer result_aux(result);
+    result_aux.deleteLeftPadding();
+    return result_aux;
+  }
+
+
 }
 
 Integer Integer::operator/(const Integer& other) const
@@ -569,6 +622,7 @@ void Integer::deleteLeftPadding()
   {
     this->last_ = this->last_->getPrev();
     this->last_->deleteNext();
+    --this->current_size_;
   }
 }
 

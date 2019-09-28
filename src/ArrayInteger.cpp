@@ -89,8 +89,7 @@ void ArrayInteger::setInteger(const int& integer)
     data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
     aux = aux / BasicInteger::MaximumNumberPlusOne();
   }
-  if (current_size_ == 1 && data_[0] == 0)
-    current_size_ = 0;
+  recalculateCurrentSize();
 }
 
 void ArrayInteger::setInteger(const long& integer)
@@ -102,8 +101,7 @@ void ArrayInteger::setInteger(const long& integer)
     data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
     aux = aux / BasicInteger::MaximumNumberPlusOne();
   }
-  if (current_size_ == 1 && data_[0] == 0)
-    current_size_ = 0;
+  recalculateCurrentSize();
 }
 
 void ArrayInteger::setInteger(const std::string& string)
@@ -124,16 +122,12 @@ void ArrayInteger::setInteger(const std::string& string)
     }
   }
   recalculateCurrentSize();
-  if (current_size_ == 1 && data_[0] == 0)
-    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const BasicInteger& data)
 {
   current_size_ = 1;
   data_[0] = data;
-  if (data_[0] == 0)
-    current_size_ = 0;
 }
 
 short ArrayInteger::getCurrentSize() const
@@ -380,8 +374,6 @@ ArrayInteger ArrayInteger::Complement() const
 
 std::string ArrayInteger::toString() const
 {
-  if (current_size_ == 0)
-    return "0";
   std::string result = data_[current_size_ - 1].toString();
    for (short i = current_size_ - 2; i >= 0; --i)
     result += data_[i].fullString();
@@ -393,11 +385,15 @@ std::string ArrayInteger::fullString() const
   std::string result;
   for (short i = 0; i < maximum_size_ - current_size_; i++) 
     result += std::string(BasicInteger::DigitNumber(), '0');
-  if(current_size_ != 0)
-    result += data_[current_size_ - 1].fullString();
+  result += data_[current_size_ - 1].fullString();
   for (short i = current_size_ - 2; i >= 0; --i)
     result += data_[i].fullString();
   return result;
+}
+
+BasicInteger ArrayInteger::First()
+{
+  return data_[0];
 }
 
 short ArrayInteger::MaximumSize()
@@ -445,5 +441,9 @@ void ArrayInteger::recalculateCurrentSize()
   while(current_size_ > 0 && data_[current_size_ - 1] == 0)
   {
     --current_size_;
+  }
+  if (current_size_ == 0)
+  {
+    current_size_ = 1;
   }
 }
