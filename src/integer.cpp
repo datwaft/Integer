@@ -388,6 +388,11 @@ Integer Integer::operator-(const Integer& other) const
     return other - *this;
   Integer result = *this + other.Complement(this->current_size_) + 1;
   
+  result.last_ = this->last_->getPrev();
+  result.last_->deleteNext();
+  result.deleteLeftPadding();
+
+  return result;
 }
 
 Integer Integer::operator*(const Integer& other) const
@@ -424,12 +429,13 @@ Integer::Integer(NodeInteger* node)
 {
   this->current_size_ = 0;
   this->first_ = node;
+  this->last_ = this->first_;
   NodeInteger* aux = node;
   while (aux != nullptr)
   {
     aux = aux->getNext();
     current_size_++;
-    if (aux->getNext() == nullptr)
+    if (aux && aux->getNext() == nullptr)
       this->last_ = aux;
   }
 }
@@ -481,7 +487,7 @@ Integer Integer::Complement(int required_size) const
       aux = aux->getNext();
     }
     if(actual != nullptr)
-      actual = actual->getNext;
+      actual = actual->getNext();
     ++actual_size;
   }
   return result;
@@ -508,6 +514,15 @@ void Integer::Clear(NodeInteger* node)
     aux = node;
     node = node->getNext();
     delete aux;
+  }
+}
+
+void Integer::deleteLeftPadding()
+{
+  while (this->last_ != nullptr && *this->last_ == 0 && this->last_ != this->first_)
+  {
+    this->last_ = this->last_->getPrev();
+    this->last_->deleteNext();
   }
 }
 

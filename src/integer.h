@@ -59,6 +59,7 @@ private:
   Integer(NodeInteger*);
   void Clear();
   void Clear(NodeInteger*);
+  void deleteLeftPadding();
   int current_size_;
   NodeInteger* first_;
   NodeInteger* last_;
