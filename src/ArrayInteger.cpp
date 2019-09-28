@@ -401,7 +401,7 @@ short ArrayInteger::MaximumSize()
   return kBytes / sizeof(BasicInteger::Base);
 }
 
-bool ArrayInteger::addBasicInteger(const BasicInteger& data)
+bool ArrayInteger::Append(const BasicInteger& data)
 {
   if (current_size_ < maximum_size_)
   {

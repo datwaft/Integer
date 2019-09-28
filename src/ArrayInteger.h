@@ -47,9 +47,9 @@ class ArrayInteger
   std::string toString() const;
   std::string fullString() const; 
   BasicInteger First();
+  bool Append(const BasicInteger&);
  protected:
   static short MaximumSize();
-  bool addBasicInteger(const BasicInteger&);
   void Split(ArrayInteger*, ArrayInteger*, short) const;
   ArrayInteger AddPadding(short, ArrayInteger* = nullptr) const;
   void recalculateCurrentSize();

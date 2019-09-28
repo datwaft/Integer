@@ -374,7 +374,7 @@ Integer Integer::operator+(const Integer& other) const
     }
   }
   if (carriage != 0)
-    return Integer(result).AppendToRight(carriage);
+    return aux->createNext(carriage);
 
   return result;
 }
@@ -428,11 +428,12 @@ Integer Integer::operator*(const Integer& other) const
       }
       actual = actual->getNext();
     }
-    Integer result_aux;
     if (carriage != 0)
-      result_aux = Integer(result).AppendToRight(carriage);
-    else
-      result_aux = result;
+    {
+      if(!(carriage.getCurrentSize() == 1 && aux->Append(carriage.First())))
+        aux->createNext(carriage);
+    }
+    Integer result_aux = result;
     result_aux.DeleteLeftPadding();
     return result_aux;
   }
