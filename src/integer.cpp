@@ -374,7 +374,7 @@ Integer Integer::operator+(const Integer& other) const
     }
   }
   if (carriage != 0)
-    return aux->createNext(carriage);
+    aux->createNext(carriage);
 
   return result;
 }
@@ -383,10 +383,12 @@ Integer Integer::operator-(const Integer& other) const
 {
   if (other == 0)
     return *this;
+
   Integer result = *this + other.Complement(this->current_size_) + 1;
-  
+
   result = result.toString().substr(1);
   result.DeleteLeftPadding();
+  
 
   return result;
 }
@@ -455,10 +457,12 @@ Integer Integer::operator*(const Integer& other) const
   // std::cout << "high2: " << high2 << "\tlow2: " << low2 << std::endl;
 
   Integer z0 = low1 * low2;
-  std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
+  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
   std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
+  std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
+  std::cout << "z2: " << z2 << std::endl;
   
   // std::cout << "z2: " << z2 << std::endl;
   // std::cout << "z2 * 10**(m2*2): " << z2.AddRightPadding(m2 * 2) << std::endl;
