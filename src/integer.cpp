@@ -224,7 +224,7 @@ int Integer::getDigits() const
 
 bool Integer::operator==(const Integer& other) const
 {
-  if (this->current_size_ != other.current_size_)
+  if (this->getDigits() != other.getDigits())
     return false;
   NodeInteger* actual_this = this->first_;
   NodeInteger* actual_other = other.first_;
@@ -245,9 +245,9 @@ bool Integer::operator!=(const Integer& other) const
 
 bool Integer::operator>(const Integer& other) const
 {
-  if(this->current_size_ < other.current_size_)
+  if(this->getDigits() < other.getDigits())
     return false;
-  if (this->current_size_ > other.current_size_)
+  if (this->getDigits() > other.getDigits())
     return true;
 
   NodeInteger* actual_this = this->first_;
@@ -264,9 +264,9 @@ bool Integer::operator>(const Integer& other) const
 
 bool Integer::operator<(const Integer& other) const
 {
-  if(this->current_size_ > other.current_size_)
+  if(this->getDigits() > other.getDigits())
     return false;
-  if (this->current_size_ < other.current_size_)
+  if (this->getDigits() < other.getDigits())
     return true;
 
   NodeInteger* actual_this = this->first_;
@@ -283,9 +283,9 @@ bool Integer::operator<(const Integer& other) const
 
 bool Integer::operator>=(const Integer& other) const
 {
-  if(this->current_size_ < other.current_size_)
+  if(this->getDigits() < other.getDigits())
     return false;
-  if (this->current_size_ > other.current_size_)
+  if (this->getDigits() > other.getDigits())
     return true;
 
   NodeInteger* actual_this = this->first_;
@@ -302,9 +302,9 @@ bool Integer::operator>=(const Integer& other) const
 
 bool Integer::operator<=(const Integer& other) const
 {
-  if(this->current_size_ > other.current_size_)
+  if(this->getDigits() > other.getDigits())
     return false;
-  if (this->current_size_ < other.current_size_)
+  if (this->getDigits() < other.getDigits())
     return true;
 
   NodeInteger* actual_this = this->first_;
@@ -443,6 +443,9 @@ Integer Integer::operator*(const Integer& other) const
     result_aux.deleteLeftPadding();
     return result_aux;
   }
+  
+  int m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
+  int m2 = m / 2;
 
 
 }
@@ -577,6 +580,21 @@ Integer Integer::Complement(int required_size) const
     ++actual_size;
   }
   return result;
+}
+
+void Integer::Split(Integer* high, Integer* low, int pivot) const
+{
+  std::string string = this->toString();
+  if (pivot >= static_cast<int>(string.length()))
+  {
+    *high = 0;
+    *low = *this; 
+  }
+  else
+  {
+    *high = string.substr(0, pivot);
+    *low = string.substr(pivot);
+  }
 }
 
 void Integer::Clear()
