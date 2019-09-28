@@ -46,6 +46,7 @@ class ArrayInteger
   ArrayInteger Complement() const;
   std::string toString() const;
   std::string fullString() const; 
+  BasicInteger First();
  protected:
   static short MaximumSize();
   bool addBasicInteger(const BasicInteger&);
