@@ -16,7 +16,7 @@ Integer::Integer(const std::string& data): first_(nullptr)
 {
   current_size_ = 0;
   this->setInteger(data);
-  deleteLeftPadding();
+  DeleteLeftPadding();
 }
 
 Integer::Integer(const BasicInteger& data): first_(nullptr)
@@ -59,7 +59,7 @@ void Integer::operator=(const std::string& data)
 {
   this->Clear();
   this->setInteger(data);
-  deleteLeftPadding();
+  DeleteLeftPadding();
 }
 
 void Integer::operator=(const BasicInteger& data)
@@ -381,7 +381,7 @@ Integer Integer::operator+(const Integer& other) const
     }
   }
   if (carriage != 0)
-    aux->createNext(carriage);
+    return Integer(result).AppendToRight(carriage);
 
   return result;
 }
@@ -396,13 +396,15 @@ Integer Integer::operator-(const Integer& other) const
   
   result.last_ = result.last_->getPrev();
   result.last_->deleteNext();
-  result.deleteLeftPadding();
+  result.DeleteLeftPadding();
 
   return result;
 }
 
 Integer Integer::operator*(const Integer& other) const
 {
+  std::cout << *this << std::endl;
+  std::cout << other << std::endl << std::endl;
   if (this->current_size_ == 1 && this->first_->getCurrentSize() == 1 || other.current_size_ == 1 && other.first_->getCurrentSize() == 1)
   {
     NodeInteger* actual;
@@ -438,10 +440,12 @@ Integer Integer::operator*(const Integer& other) const
       }
       actual = actual->getNext();
     }
+    Integer result_aux;
     if (carriage != 0)
-      aux->createNext(carriage);
-    Integer result_aux(result);
-    result_aux.deleteLeftPadding();
+      result_aux = Integer(result).AppendToRight(carriage);
+    else
+      result_aux = result;
+    result_aux.DeleteLeftPadding();
     return result_aux;
   }
   
@@ -454,10 +458,13 @@ Integer Integer::operator*(const Integer& other) const
   other.Split(&high2, &low2, m2);
 
   Integer z0 = low1 * low2;
+  std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
+  std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
+  std::cout << "z2: " << z2 << std::endl;
 
-  return z2.addRightPadding(m2 * 2) + (z1 - z2 - z0).addRightPadding(m2) + z0;
+  return z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
 }
 
 Integer Integer::operator/(const Integer& other) const
@@ -620,7 +627,7 @@ void Integer::Split(Integer* high, Integer* low, int pivot) const
   }
 }
 
-Integer Integer::addRightPadding(int padding) const
+Integer Integer::AddRightPadding(int padding) const
 {
   std::string string = this->toString();
   string += std::string(padding, '0');
@@ -651,7 +658,7 @@ void Integer::Clear(NodeInteger* node)
   }
 }
 
-void Integer::deleteLeftPadding()
+void Integer::DeleteLeftPadding()
 {
   while (this->last_ != nullptr && *this->last_ == 0 && this->last_ != this->first_)
   {
@@ -659,6 +666,11 @@ void Integer::deleteLeftPadding()
     this->last_->deleteNext();
     --this->current_size_;
   }
+}
+
+Integer Integer::AppendToRight(Integer to_append) const
+{
+  return to_append.toString() + this->toString();
 }
 
 std::ostream& operator<<(std::ostream& out, const Integer& integer)

@@ -55,14 +55,15 @@ public:
   Integer Complement() const;
   Integer Complement(int) const;
   void Split(Integer*, Integer*, int) const;
-  Integer addRightPadding(int) const;
+  Integer AddRightPadding(int) const;
   std::string toString() const;
   static Integer Parse(const std::string&);
 private:
   Integer(NodeInteger*);
   void Clear();
   void Clear(NodeInteger*);
-  void deleteLeftPadding();
+  void DeleteLeftPadding();
+  Integer AppendToRight(Integer) const;
   int current_size_;
   NodeInteger* first_;
   NodeInteger* last_;
