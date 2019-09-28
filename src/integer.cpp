@@ -16,6 +16,7 @@ Integer::Integer(const std::string& data): first_(nullptr)
 {
   current_size_ = 0;
   this->setInteger(data);
+  deleteLeftPadding();
 }
 
 Integer::Integer(const BasicInteger& data): first_(nullptr)
@@ -58,6 +59,7 @@ void Integer::operator=(const std::string& data)
 {
   this->Clear();
   this->setInteger(data);
+  deleteLeftPadding();
 }
 
 void Integer::operator=(const BasicInteger& data)
