@@ -89,6 +89,8 @@ void ArrayInteger::setInteger(const int& integer)
     data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
     aux = aux / BasicInteger::MaximumNumberPlusOne();
   }
+  if (current_size_ == 1 && data_[0] == 0)
+    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const long& integer)
@@ -100,6 +102,8 @@ void ArrayInteger::setInteger(const long& integer)
     data_[current_size_++] = aux % BasicInteger::MaximumNumberPlusOne();
     aux = aux / BasicInteger::MaximumNumberPlusOne();
   }
+  if (current_size_ == 1 && data_[0] == 0)
+    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const std::string& string)
@@ -119,6 +123,9 @@ void ArrayInteger::setInteger(const std::string& string)
       aux.clear();
     }
   }
+  recalculateCurrentSize();
+  if (current_size_ == 1 && data_[0] == 0)
+    current_size_ = 0;
 }
 
 void ArrayInteger::setInteger(const BasicInteger& data)

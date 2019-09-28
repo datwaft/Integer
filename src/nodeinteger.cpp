@@ -62,7 +62,6 @@ NodeInteger* NodeInteger::createNext(const NodeInteger& data)
 	aux->next_ = this->next_;
 	aux->prev_ = this;
 
-	
 	this->next_ = aux;
 	if(aux->next_)
 		aux->next_->prev_ = aux;
@@ -85,7 +84,7 @@ bool NodeInteger::deleteNext()
 {
 	if(!this->next_)
 		return false;
-	
+
 	NodeInteger* aux = this->next_;
 	this->next_ = aux->next_;
 	if(aux->next_)

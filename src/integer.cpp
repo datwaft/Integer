@@ -388,7 +388,7 @@ Integer Integer::operator-(const Integer& other) const
     return other - *this;
   Integer result = *this + other.Complement(this->current_size_) + 1;
   
-  result.last_ = this->last_->getPrev();
+  result.last_ = result.last_->getPrev();
   result.last_->deleteNext();
   result.deleteLeftPadding();
 
