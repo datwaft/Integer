@@ -61,6 +61,7 @@ private:
   void Clear(NodeInteger*);
   int current_size_;
   NodeInteger* first_;
+  NodeInteger* last_;
 };
 
 #endif // INTEGER_SRC_INTEGER_H_

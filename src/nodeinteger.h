@@ -18,7 +18,16 @@ class NodeInteger: public ArrayInteger
   NodeInteger(const BasicInteger&);
   NodeInteger(const ArrayInteger&);
   NodeInteger(const NodeInteger&);
+  void operator=(const NodeInteger&);
+  NodeInteger* getNext();
+  NodeInteger* getPrev();
+  NodeInteger* createNext(const NodeInteger&);
+  NodeInteger* createPrev(const NodeInteger&);
+  bool deleteNext();
+  bool deletePrev();
+ private:
   NodeInteger* next_;
+  NodeInteger* prev_;
 };
 
 #endif // !INTEGER_SRC_NODEINTEGER_H_
