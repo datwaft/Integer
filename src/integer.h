@@ -55,6 +55,7 @@ public:
   Integer Complement() const;
   Integer Complement(int) const;
   void Split(Integer*, Integer*, int) const;
+  Integer addRightPadding(int) const;
   std::string toString() const;
   static Integer Parse(const std::string&);
 private:

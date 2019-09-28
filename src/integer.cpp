@@ -218,6 +218,7 @@ int Integer::getDigits() const
   while (actual != nullptr)
   {
     contador += actual->getDigits();
+    actual = actual->getNext();
   }
   return contador;
 }
@@ -447,7 +448,16 @@ Integer Integer::operator*(const Integer& other) const
   int m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
   int m2 = m / 2;
 
+  Integer high1, low1;
+  this->Split(&high1, &low1, m2);
+  Integer high2, low2;
+  other.Split(&high2, &low2, m2);
 
+  Integer z0 = low1 * low2;
+  Integer z1 = (low1 + high1) * (low2 + high2);
+  Integer z2 = high1 * high2;
+
+  return z2.addRightPadding(m2 * 2) + (z1 - z2 - z0).addRightPadding(m2) + z0;
 }
 
 Integer Integer::operator/(const Integer& other) const
@@ -608,6 +618,13 @@ void Integer::Split(Integer* high, Integer* low, int pivot) const
     *high = string.substr(0, pivot);
     *low = string.substr(pivot);
   }
+}
+
+Integer Integer::addRightPadding(int padding) const
+{
+  std::string string = this->toString();
+  string += std::string(padding, '0');
+  return string;
 }
 
 void Integer::Clear()
