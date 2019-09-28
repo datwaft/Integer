@@ -88,30 +88,22 @@ void Integer::operator=(const Integer& other)
 
 void Integer::operator+=(const Integer& other)
 {
-  auto aux = this->first_;
   *this = *this + other;
-  this->Clear(aux);
 }
 
 void Integer::operator-=(const Integer& other)
 {
-  auto aux = this->first_;
   *this = *this - other;
-  this->Clear(aux);
 }
 
 void Integer::operator*=(const Integer& other)
 {
-  auto aux = this->first_;
   *this = *this * other;
-  this->Clear(aux);
 }
 
 void Integer::operator/=(const Integer& other)
 {
-  auto aux = this->first_;
   *this = *this / other;
-  this->Clear(aux);
 }
 
 Integer::~Integer()

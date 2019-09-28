@@ -52,7 +52,7 @@ int main()
   while (true)
   {
     cout << counter << endl;
-    counter = counter + 1;
+    counter += 1;
   }
 
   return EXIT_SUCCESS;
