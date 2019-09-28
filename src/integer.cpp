@@ -388,6 +388,28 @@ Integer Integer::operator*(const Integer& other) const
 
 Integer Integer::operator/(const Integer& other) const
 {
+  
+
+  std::string dividend = this->toString();
+  std::string divisor = other.toString();
+  long long result;
+
+  if (dividend.size() <= 18)
+    if (divisor.size() <= 18)
+    {
+      result  = (std::stoll(dividend) / std::stoll(divisor));
+      return std::to_string(result);
+    }
+
+  std::string aux;
+  std::string auxdivisor;
+  
+  std::string resultstring;
+
+
+
+
+
   return Integer();
 }
 
