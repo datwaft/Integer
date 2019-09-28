@@ -394,8 +394,7 @@ Integer Integer::operator-(const Integer& other) const
     return other - *this;
   Integer result = *this + other.Complement(this->current_size_) + 1;
   
-  result.last_ = result.last_->getPrev();
-  result.last_->deleteNext();
+  result = result.toString().substr(1);
   result.DeleteLeftPadding();
 
   return result;
@@ -451,6 +450,9 @@ Integer Integer::operator*(const Integer& other) const
   
   int m = this->getDigits() <= other.getDigits() ? this->getDigits() : other.getDigits();
   int m2 = m / 2;
+  
+  std::cout << "m: " << m << std::endl;
+  std::cout << "m2: " << m2 << std::endl;
 
   Integer high1, low1;
   this->Split(&high1, &low1, m2);
@@ -464,7 +466,11 @@ Integer Integer::operator*(const Integer& other) const
   Integer z2 = high1 * high2;
   std::cout << "z2: " << z2 << std::endl;
 
-  return z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
+  Integer part1 = z2.AddRightPadding(m2 * 2);
+  std::cout << "part1: " << part1 << std::endl;
+  Integer part2 = (z1 - z2 - z0);
+  std::cout << "part2: " << part2 << std::endl;
+  return part1 + part2 + z0;
 }
 
 Integer Integer::operator/(const Integer& other) const
@@ -629,9 +635,7 @@ void Integer::Split(Integer* high, Integer* low, int pivot) const
 
 Integer Integer::AddRightPadding(int padding) const
 {
-  std::string string = this->toString();
-  string += std::string(padding, '0');
-  return string;
+  return this->toString() + std::string(padding, '0');
 }
 
 void Integer::Clear()
