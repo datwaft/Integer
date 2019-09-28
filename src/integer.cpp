@@ -495,10 +495,10 @@ Integer Integer::operator/(const Integer& other) const
       resultstring = (Parse(resultstring) + Parse(divisor)).toString();
       counter = (Parse(counter) + 1).toString();
 
-      std::cout << Parse(resultstring).toString() << "\n";
+    /*  std::cout << Parse(resultstring).toString() << "\n";
       system("pause");
       std::cout << Parse(auxdividend).toString() << "\n";
-      system("pause");
+      system("pause");*/
 
 
     }
