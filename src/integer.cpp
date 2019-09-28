@@ -317,7 +317,7 @@ bool Integer::operator<(const Integer& other) const
     NodeInteger* actual_other = other.first_;
     while (actual_this != nullptr)
     {
-      if (*actual_this <= *actual_other)
+      if (*actual_this >= *actual_other)
         return false;
       actual_this = actual_this->getNext();
       actual_other = actual_other->getNext();
@@ -371,7 +371,7 @@ bool Integer::operator<=(const Integer& other) const
     NodeInteger* actual_other = other.first_;
     while (actual_this != nullptr)
     {
-      if (*actual_this < *actual_other)
+      if (*actual_this > *actual_other)
         return false;
       actual_this = actual_this->getNext();
       actual_other = actual_other->getNext();
@@ -599,16 +599,14 @@ Integer Integer::operator*(const Integer& other) const
   // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
   // std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
-  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
+  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
   // std::cout << "z2: " << z2 << std::endl;
   
   std::cout << "m2: " << m2 << std::endl;
   std::cout << "z0: " << z0 << std::endl;
   std::cout << "z1: " << z1 << std::endl;
   std::cout << "z2: " << z2 << std::endl;
-  std::cout << z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0 << std::endl;
-  // std::cout << "z2: " << z2 << std::endl;
-  // std::cout << "z2 * 10**(m2*2): " << z2.AddRightPadding(m2 * 2) << std::endl;
+  std::cout << (z1 - z2 - z0) << std::endl;
 
   Integer result_aux = z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
 
@@ -771,6 +769,7 @@ Integer Integer::Complement(int required_size) const
 
 void Integer::Split(Integer* high, Integer* low, int pivot) const
 {
+  pivot += 1;
   std::string string = this->toString();
   if (pivot >= static_cast<int>(string.length()))
   {
