@@ -211,6 +211,17 @@ int Integer::getCurrentSize() const
   return this->current_size_;
 }
 
+int Integer::getDigits() const
+{
+  int contador = 0;
+  NodeInteger* actual = this->first_;
+  while (actual != nullptr)
+  {
+    contador += actual->getDigits();
+  }
+  return contador;
+}
+
 bool Integer::operator==(const Integer& other) const
 {
   if (this->current_size_ != other.current_size_)
@@ -432,6 +443,8 @@ Integer Integer::operator*(const Integer& other) const
     result_aux.deleteLeftPadding();
     return result_aux;
   }
+
+
 }
 
 Integer Integer::operator/(const Integer& other) const
@@ -596,6 +609,7 @@ void Integer::deleteLeftPadding()
   {
     this->last_ = this->last_->getPrev();
     this->last_->deleteNext();
+    --this->current_size_;
   }
 }
 
