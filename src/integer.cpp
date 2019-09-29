@@ -600,22 +600,9 @@ Integer Integer::operator*(const Integer& other) const
   other.Split(&high2, &low2, m2);
 
   Integer z0 = low1 * low2;
-  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
-  // std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
-  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
-  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
-  // std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
-  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
-  // std::cout << "z2: " << z2 << std::endl;
 
-
-  // std::cout << "m2: " << m2 << std::endl;
-  // std::cout << "z0: " << z0 << std::endl;
-  // std::cout << "z1: " << z1 << std::endl;
-  // std::cout << "z2: " << z2 << std::endl;
-  // std::cout << "result: " << z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0 << std::endl;
   Integer result_aux = z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
 
   if (this->sign_ != NEGATIVE && other.sign_ == NEGATIVE)
@@ -858,21 +845,4 @@ std::ostream& operator<<(std::ostream& out, const Integer& integer)
 {
   out << integer.toString();
   return out;
-}
-
-std::string Integer::toStringDeveloper() const
-{
-  std::string result;
-  NodeInteger* actual = this->first_;
-  while (actual != nullptr)
-  {
-    if (actual->getNext() != nullptr)
-      result = "[" + actual->fullString() + "]" + result;
-    else
-      result = "[" + actual->toString() + "]" + result;
-    actual = actual->getNext();
-  }
-  if (this->sign_ == NEGATIVE)
-    result = "-" + result;
-  return result;
 }
