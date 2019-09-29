@@ -720,6 +720,11 @@ Integer Integer::Fibonacci(Integer number)
   return next;
 }
 
+Integer Integer::Combinations(Integer n, Integer k)
+{
+  return Factorial(n)/(Factorial(k)*Factorial(n - k));
+}
+
 Integer::Integer(NodeInteger* node, Sign sign)
 {
   this->current_size_ = 0;

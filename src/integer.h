@@ -64,6 +64,7 @@ public:
   static Integer Parse(const std::string&);
   static Integer Factorial(Integer);
   static Integer Fibonacci(Integer);
+  static Integer Combinations(Integer, Integer);
 private:
   Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
