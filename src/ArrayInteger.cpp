@@ -168,10 +168,12 @@ bool ArrayInteger::operator>(const ArrayInteger& other) const
     return false;
   for (short i = current_size_ - 1; i >= 0; --i)
   {
-    if (data_[i] <= other.data_[i])
+    if (data_[i] < other.data_[i])
       return false;
+    else if (data_[i] > other.data_[i])
+      return true;
   }
-  return true;
+  return false;
 }
 
 bool ArrayInteger::operator<(const ArrayInteger& other) const
@@ -182,10 +184,12 @@ bool ArrayInteger::operator<(const ArrayInteger& other) const
     return true;
   for (short i = current_size_ - 1; i >= 0; --i)
   {
-    if (data_[i] >= other.data_[i])
+    if (data_[i] > other.data_[i])
       return false;
+    else if (data_[i] < other.data_[i])
+      return true;
   }
-  return true;
+  return false;
 }
 
 bool ArrayInteger::operator>=(const ArrayInteger& other) const
@@ -198,6 +202,8 @@ bool ArrayInteger::operator>=(const ArrayInteger& other) const
   {
     if (data_[i] < other.data_[i])
       return false;
+    else if (data_[i] > other.data_[i])
+      return true;
   }
   return true;
 }
@@ -212,6 +218,8 @@ bool ArrayInteger::operator<=(const ArrayInteger& other) const
   {
     if (data_[i] > other.data_[i])
       return false;
+    else if (data_[i] < other.data_[i])
+      return true;
   }
   return true;
 }

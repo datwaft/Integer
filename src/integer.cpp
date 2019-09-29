@@ -287,16 +287,19 @@ bool Integer::operator>(const Integer& other) const
     if (this->getDigits() > other.getDigits())
       return true;
 
-    NodeInteger* actual_this = this->first_;
-    NodeInteger* actual_other = other.first_;
+    NodeInteger* actual_this = this->last_;
+    NodeInteger* actual_other = other.last_;
+
     while (actual_this != nullptr)
     {
-      if (*actual_this <= *actual_other)
+      if (*actual_this < *actual_other)
         return false;
-      actual_this = actual_this->getNext();
-      actual_other = actual_other->getNext();
+      if (*actual_this > *actual_other)
+        return true;
+      actual_this = actual_this->getPrev();
+      actual_other = actual_other->getPrev();
     }
-    return true;
+    return false;
   }
   if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
     return false;
@@ -314,16 +317,18 @@ bool Integer::operator<(const Integer& other) const
     if (this->getDigits() > other.getDigits())
       return false;
 
-    NodeInteger* actual_this = this->first_;
-    NodeInteger* actual_other = other.first_;
+    NodeInteger* actual_this = this->last_;
+    NodeInteger* actual_other = other.last_;
     while (actual_this != nullptr)
     {
-      if (*actual_this >= *actual_other)
+      if (*actual_this > *actual_other)
         return false;
-      actual_this = actual_this->getNext();
-      actual_other = actual_other->getNext();
+      if (*actual_this < *actual_other)
+        return true;
+      actual_this = actual_this->getPrev();
+      actual_other = actual_other->getPrev();
     }
-    return true;
+    return false;
   }
   if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
     return true;
@@ -341,14 +346,16 @@ bool Integer::operator>=(const Integer& other) const
     if (this->getDigits() > other.getDigits())
       return true;
 
-    NodeInteger* actual_this = this->first_;
-    NodeInteger* actual_other = other.first_;
+    NodeInteger* actual_this = this->last_;
+    NodeInteger* actual_other = other.last_;
     while (actual_this != nullptr)
     {
       if (*actual_this < *actual_other)
         return false;
-      actual_this = actual_this->getNext();
-      actual_other = actual_other->getNext();
+      if (*actual_this > *actual_other)
+        return true;
+      actual_this = actual_this->getPrev();
+      actual_other = actual_other->getPrev();
     }
     return true;
   }
@@ -368,14 +375,16 @@ bool Integer::operator<=(const Integer& other) const
     if (this->getDigits() > other.getDigits())
       return false;
 
-    NodeInteger* actual_this = this->first_;
-    NodeInteger* actual_other = other.first_;
+    NodeInteger* actual_this = this->last_;
+    NodeInteger* actual_other = other.last_;
     while (actual_this != nullptr)
     {
       if (*actual_this > *actual_other)
         return false;
-      actual_this = actual_this->getNext();
-      actual_other = actual_other->getNext();
+      if (*actual_this < *actual_other)
+        return true;
+      actual_this = actual_this->getPrev();
+      actual_other = actual_other->getPrev();
     }
     return true;
   }
@@ -769,15 +778,28 @@ Integer Integer::Complement(int required_size) const
 void Integer::Split(Integer* high, Integer* low, int pivot) const
 {
   std::string string = this->toString();
+  bool flag = false;
+  if (string[0] == '-')
+  {
+    string = string.substr(1);
+    flag = true;
+  }
   if (pivot >= static_cast<int>(string.length()))
   {
     *high = 0;
-    *low = *this; 
+    *low = *this;
+    if (flag)
+      low->sign_ = NEGATIVE;
   }
   else
   {
     *high = string.substr(0, string.size() - pivot);
     *low = string.substr(string.size() - pivot);
+    if (flag)
+    {
+      low->sign_ = NEGATIVE;
+      high->sign_ = NEGATIVE;
+    }
   }
 }
 
