@@ -40,18 +40,13 @@ class ArrayInteger
   bool operator <= (const ArrayInteger&) const;
 	ArrayInteger Addition(const ArrayInteger&, ArrayInteger* = nullptr) const;
 	ArrayInteger Substraction(const ArrayInteger&) const;
-	ArrayInteger Multiplication(const ArrayInteger&, ArrayInteger* = nullptr) const;
 	ArrayInteger Multiplication(const BasicInteger&, BasicInteger* = nullptr) const;
-	ArrayInteger Division(const ArrayInteger&) const;
   ArrayInteger Complement() const;
   std::string toString() const;
   std::string fullString() const; 
   BasicInteger First();
-  bool Append(const BasicInteger&);
  protected:
   static short MaximumSize();
-  void Split(ArrayInteger*, ArrayInteger*, short) const;
-  ArrayInteger AddPadding(short, ArrayInteger* = nullptr) const;
   void recalculateCurrentSize();
   static short maximum_size_;
   short current_size_;

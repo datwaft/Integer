@@ -38,9 +38,6 @@
     <ClInclude Include="src\basicinteger.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\pair.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="src\sign.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
