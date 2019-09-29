@@ -1,3 +1,7 @@
+// integer.cpp
+// Autores: David Guevara & Mario Arguello
+// Descripción: contiene la implementación de la clase Integer.
+
 #include "integer.h"
 
 Integer::Integer(const int& data): first_(nullptr)
@@ -686,6 +690,16 @@ std::string Integer::toString() const
 Integer Integer::Parse(const std::string& string)
 {
   return Integer(string);
+}
+
+Integer Integer::Factorial(Integer number)
+{
+  Integer result = 1;
+  for (Integer i = 2; i <= number; i += 1)
+  {
+    result *= i;
+  }
+  return result;
 }
 
 Integer::Integer(NodeInteger* node, Sign sign)

@@ -1,3 +1,8 @@
+// integer.h
+// Autores: David Guevara & Mario Arguello
+// Descripción: contiene la declaración de la clase Integer, la cual es una 
+//              implementación particular de BigInteger.
+
 #ifndef INTEGER_SRC_INTEGER_H_
 #define INTEGER_SRC_INTEGER_H_
 
@@ -57,6 +62,7 @@ public:
   Integer Complement(int) const;
   std::string toString() const;
   static Integer Parse(const std::string&);
+  static Integer Factorial(Integer);
 private:
   Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
