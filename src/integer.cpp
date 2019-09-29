@@ -570,10 +570,7 @@ Integer Integer::operator*(const Integer& other) const
       actual = actual->getNext();
     }
     if (carriage != 0)
-    {
-      if(!(carriage.getCurrentSize() == 1 && aux->Append(carriage.First())))
-        aux->createNext(carriage);
-    }
+      aux->createNext(carriage);
     Integer result_aux = result;
     result_aux.DeleteLeftPadding();
 
@@ -594,8 +591,16 @@ Integer Integer::operator*(const Integer& other) const
   other.Split(&high2, &low2, m2);
 
   Integer z0 = low1 * low2;
+  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
+  // std::cout << "z0: " << z0 << std::endl;
   Integer z1 = (low1 + high1) * (low2 + high2);
+  // std::cout << "low1, low2: " << low1 << " " << low2 << std::endl;
+  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
+  // std::cout << "z1: " << z1 << std::endl;
   Integer z2 = high1 * high2;
+  // std::cout << "high1, high2: " << high1 << " " << high2 << std::endl;
+  // std::cout << "z2: " << z2 << std::endl;
+
 
   // std::cout << "m2: " << m2 << std::endl;
   // std::cout << "z0: " << z0 << std::endl;

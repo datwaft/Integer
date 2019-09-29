@@ -315,7 +315,7 @@ ArrayInteger ArrayInteger::Multiplication(const BasicInteger& number, BasicInteg
   BasicInteger operation_carriage1;
   BasicInteger operation_carriage2;
   BasicInteger operation_carriage;
-  for (short i = 0; i < this->current_size_; ++i)
+  for (short i = 0; i < this->maximum_size_; ++i)
   {
     result.data_[i] = this->data_[i].Multiplication(number, &operation_carriage1);
     result.data_[i] = result.data_[i].Addition(operation_carriage, &operation_carriage2);
