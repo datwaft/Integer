@@ -234,6 +234,7 @@ void Integer::setInteger(const Integer& other)
     this->last_ = this->first_;
     aux = first_;
     otheraux = otheraux->getNext();
+    current_size_++;
   }
   while (otheraux)
   {
@@ -596,6 +597,11 @@ Integer Integer::operator*(const Integer& other) const
   Integer z1 = (low1 + high1) * (low2 + high2);
   Integer z2 = high1 * high2;
 
+  // std::cout << "m2: " << m2 << std::endl;
+  // std::cout << "z0: " << z0 << std::endl;
+  // std::cout << "z1: " << z1 << std::endl;
+  // std::cout << "z2: " << z2 << std::endl;
+  // std::cout << "result: " << z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0 << std::endl;
   Integer result_aux = z2.AddRightPadding(m2 * 2) + (z1 - z2 - z0).AddRightPadding(m2) + z0;
 
   if (this->sign_ != NEGATIVE && other.sign_ == NEGATIVE)
@@ -825,4 +831,21 @@ std::ostream& operator<<(std::ostream& out, const Integer& integer)
 {
   out << integer.toString();
   return out;
+}
+
+std::string Integer::toStringDeveloper() const
+{
+  std::string result;
+  NodeInteger* actual = this->first_;
+  while (actual != nullptr)
+  {
+    if (actual->getNext() != nullptr)
+      result = "[" + actual->fullString() + "]" + result;
+    else
+      result = "[" + actual->toString() + "]" + result;
+    actual = actual->getNext();
+  }
+  if (this->sign_ == NEGATIVE)
+    result = "-" + result;
+  return result;
 }

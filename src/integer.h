@@ -59,6 +59,7 @@ public:
   Integer AddRightPadding(int) const;
   std::string toString() const;
   static Integer Parse(const std::string&);
+  std::string toStringDeveloper() const;
 private:
   Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
