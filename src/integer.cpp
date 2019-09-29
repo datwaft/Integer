@@ -702,6 +702,24 @@ Integer Integer::Factorial(Integer number)
   return result;
 }
 
+Integer Integer::Fibonacci(Integer number)
+{
+  if (number < 2)
+    return number;
+  Integer prev = 1;
+  Integer current = 1;
+  Integer next = 1;
+
+  for (Integer i = 3; i <= number; i += 1) 
+  {
+    next = current + prev;
+    prev = current;
+    current = next;
+  }
+
+  return next;
+}
+
 Integer::Integer(NodeInteger* node, Sign sign)
 {
   this->current_size_ = 0;

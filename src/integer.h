@@ -63,6 +63,7 @@ public:
   std::string toString() const;
   static Integer Parse(const std::string&);
   static Integer Factorial(Integer);
+  static Integer Fibonacci(Integer);
 private:
   Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
