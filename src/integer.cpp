@@ -765,28 +765,17 @@ Integer Integer::Complement(int required_size) const
 void Integer::Split(Integer* high, Integer* low, int pivot) const
 {
   std::string string = this->toString();
-  bool flag = false;
   if (string[0] == '-')
-  {
     string = string.substr(1);
-    flag = true;
-  }
   if (pivot >= static_cast<int>(string.length()))
   {
     *high = 0;
     *low = *this;
-    if (flag)
-      low->sign_ = NEGATIVE;
   }
   else
   {
     *high = string.substr(0, string.size() - pivot);
     *low = string.substr(string.size() - pivot);
-    if (flag)
-    {
-      low->sign_ = NEGATIVE;
-      high->sign_ = NEGATIVE;
-    }
   }
 }
 

@@ -55,14 +55,14 @@ public:
   friend std::ostream& operator<<(std::ostream&, const Integer&);
   Integer Complement() const;
   Integer Complement(int) const;
-  void Split(Integer*, Integer*, int) const;
-  Integer AddRightPadding(int) const;
   std::string toString() const;
   static Integer Parse(const std::string&);
 private:
   Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
   void Clear(NodeInteger*);
+  Integer AddRightPadding(int) const;
+  void Split(Integer*, Integer*, int) const;
   void DeleteLeftPadding();
   Integer AppendToRight(Integer) const;
   Integer Neutral() const;
