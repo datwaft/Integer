@@ -53,6 +53,7 @@ public:
   bool operator < (const Integer&) const;
   bool operator >= (const Integer&) const;
   bool operator <= (const Integer&) const;
+  bool checkForCero(const std::string&) const;
   Integer operator + (const Integer&) const;
   Integer operator - (const Integer&) const;
   Integer operator * (const Integer&) const;

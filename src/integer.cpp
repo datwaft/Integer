@@ -399,6 +399,16 @@ bool Integer::operator<=(const Integer& other) const
   return this->Neutral() >= other.Neutral();
 }
 
+bool Integer::checkForCero(const std::string& s) const
+{
+  for (char i : s)
+  {
+    if (i != '0')
+      return false;
+  }
+    return true;
+}
+
 Integer Integer::operator+(const Integer& other) const
 {
   if (other == 0)
@@ -619,54 +629,67 @@ Integer Integer::operator*(const Integer& other) const
 
 Integer Integer::operator/(const Integer& other) const
 {
-  
-
   std::string dividend = this->toString();
   std::string divisor = other.toString();
   long long result;
+  bool flag = false;
 
-  if (dividend.size() <= 18)
-    if (divisor.size() <= 18)
-    {
-      result  = (std::stoll(dividend) / std::stoll(divisor));
-      return std::to_string(result);
-    }
+  /* if (dividend.size() <= 18)
+     if (divisor.size() <= 18)
+     {
+       result  = (std::stoll(dividend) / std::stoll(divisor));
+       return std::to_string(result);
+     }*/
 
- /* std::string aux;*/
- 
-  std::string resultstring = "0";
+  std::string timesin = "0";
   std::string counter = "0";
-  std::string sobra = "0";
-  std::string resultadoF = "0";
-  
-  while(dividend.size() > divisor.size())
+  std::string residuo = "0";
+  std::string resultstring = "";
+  std::string auxdividend = "0";
+  std::string sizeofstring = "0";
+
+  sizeofstring = auxdividend = dividend.substr(0, divisor.length());
+  dividend = dividend.substr(sizeofstring.size(), dividend.length());
+
+  while (dividend != "" || Parse(auxdividend) > Parse(divisor))
   {
-    std::string auxdividend = dividend.substr(0, divisor.length());
-
-    while (Parse(resultstring) < Parse(auxdividend))
+    if (Parse(auxdividend) < Parse(divisor))
     {
-      resultstring = (Parse(resultstring) + Parse(divisor)).toString();
-      counter = (Parse(counter) + 1).toString();
-
-    /*  std::cout << Parse(resultstring).toString() << "\n";
-      system("pause");
-      std::cout << Parse(auxdividend).toString() << "\n";
-      system("pause");*/
+      resultstring = resultstring + "0";
+      auxdividend = auxdividend + dividend.substr(0, 1);
+      if (dividend.size() == 1 || dividend == "")
+        dividend = "";
+      else
+        dividend = dividend.substr(1, dividend.size());
     }
-    resultstring = (Parse(resultstring) - Parse(divisor)).toString();
-      counter = (Parse(counter) - 1).toString();
+    else
+    {
+      while (Parse(timesin) < Parse(auxdividend))
+      {
+        timesin = (Parse(timesin) + Parse(divisor)).toString();
+        counter = (Parse(counter) + 1).toString();
+        residuo = "";
+      }
+      if (Parse(timesin) > Parse(auxdividend)) 
+      {
+        timesin = (Parse(timesin) - Parse(divisor)).toString();
+        counter = (Parse(counter) - 1).toString();
+        residuo = (Parse(auxdividend) - Parse(timesin)).toString(); 
+      }
 
-    sobra = /*resultstring =*/ (Parse(auxdividend) - Parse(resultstring)).toString();
-
-    dividend = sobra + dividend.substr(divisor.size() + 1, dividend.size() - 1);
-
-    resultadoF = resultadoF + counter;
-
-    counter = "0";
-    resultstring = "0";
-
+      resultstring = resultstring + counter;
+      auxdividend = residuo + dividend.substr(0, 1);
+      if (dividend.size() == 1 || dividend == "")
+        dividend = "";
+      else
+        dividend = dividend.substr(1, dividend.size());
+      timesin = "0";
+      counter = "0";
+    }
   }
-  return (resultadoF + "0");
+  if (auxdividend.size() > 0 && checkForCero(auxdividend))
+    resultstring = resultstring + "0";
+  return resultstring;
 
 }
 
