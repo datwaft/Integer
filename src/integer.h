@@ -6,7 +6,6 @@
 #ifndef INTEGER_SRC_INTEGER_H_
 #define INTEGER_SRC_INTEGER_H_
 
-#include <iostream>
 #include <exception>
 
 #include "basicinteger.h"

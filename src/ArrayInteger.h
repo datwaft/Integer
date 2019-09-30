@@ -6,7 +6,6 @@
 #define INTEGER_SRC_ARRAYINTEGER_H_
 
 #include <string>
-#include <iostream>
 
 #include "basicinteger.h"
 
