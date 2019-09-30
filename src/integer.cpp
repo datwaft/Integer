@@ -629,17 +629,37 @@ Integer Integer::operator*(const Integer& other) const
 
 Integer Integer::operator/(const Integer& other) const
 {
+  /*if (*this == other)
+  {
+    return 1;
+  }*/
+  try
+  {
+    if (other.toString() == "0")
+    {
+      throw std::exception("No se puede dividir entre 0");
+    }
+  }
+  catch(std::exception e)
+  {
+    std::cout << e.what();
+  }
+  if (other > * this)
+    return 0;
+
+  bool flag = false;
   std::string dividend = this->toString();
   std::string divisor = other.toString();
-  long long result;
-  bool flag = false;
 
-  /* if (dividend.size() <= 18)
+  long long result;
+ /* bool flag = false;*/
+
+   if (dividend.size() <= 18)
      if (divisor.size() <= 18)
      {
        result  = (std::stoll(dividend) / std::stoll(divisor));
        return std::to_string(result);
-     }*/
+}
 
   std::string timesin = "0";
   std::string counter = "0";
@@ -689,7 +709,12 @@ Integer Integer::operator/(const Integer& other) const
   }
   if (auxdividend.size() > 0 && checkForCero(auxdividend))
     resultstring = resultstring + "0";
-  return resultstring;
+
+  if (flag)
+    return ("-" + resultstring);
+  else
+    return resultstring;
+
 
 }
 

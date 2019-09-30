@@ -7,11 +7,13 @@
 #define INTEGER_SRC_INTEGER_H_
 
 #include <iostream>
+#include <exception>
 
 #include "basicinteger.h"
 #include "arrayinteger.h"
 #include "nodeinteger.h"
 #include "sign.h"
+
 
 #define ZERO Integer(0);
 #define ONE Integer(0);
