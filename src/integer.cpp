@@ -256,7 +256,7 @@ int Integer::getCurrentSize() const
 
 int Integer::getDigits() const
 {
-  return static_cast<int>(this->toString().size());
+  return static_cast<int>(this->toString().size()) - (this->sign_ == NEGATIVE ? 1 : 0);
 }
 
 bool Integer::operator==(const Integer& other) const
@@ -629,37 +629,29 @@ Integer Integer::operator*(const Integer& other) const
 
 Integer Integer::operator/(const Integer& other) const
 {
-  /*if (*this == other)
-  {
-    return 1;
-  }*/
-  try
-  {
-    if (other.toString() == "0")
-    {
-      throw std::exception("No se puede dividir entre 0");
-    }
-  }
-  catch(std::exception e)
-  {
-    std::cout << e.what();
-  }
   if (other > * this)
     return 0;
-
   bool flag = false;
+
+  if (other == 0)
+    throw std::exception("Division by 0");
+
   std::string dividend = this->toString();
+  if (this->sign_ == NEGATIVE)
+    dividend = dividend.substr(1);
   std::string divisor = other.toString();
+  if (other.sign_ == NEGATIVE)
+    divisor = divisor.substr(1);
 
   long long result;
- /* bool flag = false;*/
-
-   if (dividend.size() <= 18)
-     if (divisor.size() <= 18)
-     {
-       result  = (std::stoll(dividend) / std::stoll(divisor));
-       return std::to_string(result);
-}
+  if (dividend.size() <= 18)
+  {
+    if (divisor.size() <= 18)
+    {
+      result = (std::stoll(dividend) / std::stoll(divisor));
+      return std::to_string(result);
+    }
+  }
 
   std::string timesin = "0";
   std::string counter = "0";
@@ -710,12 +702,14 @@ Integer Integer::operator/(const Integer& other) const
   if (auxdividend.size() > 0 && checkForCero(auxdividend))
     resultstring = resultstring + "0";
 
-  if (flag)
-    return ("-" + resultstring);
-  else
-    return resultstring;
+  Integer result_aux(resultstring);
 
+  if (this->sign_ != NEGATIVE && other.sign_ == NEGATIVE)
+    result_aux.sign_ = NEGATIVE;
+  else if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
+    result_aux.sign_ = NEGATIVE;
 
+  return result_aux;
 }
 
 std::string Integer::toString() const
@@ -866,7 +860,7 @@ void Integer::Split(Integer* high, Integer* low, int pivot) const
 
 Integer Integer::AddRightPadding(int padding) const
 {
-  return (this->sign_ == NEGATIVE ? "-" : "") + this->toString() + std::string(padding, '0');
+  return this->toString() + std::string(padding, '0');
 }
 
 void Integer::Clear()
