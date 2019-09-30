@@ -643,16 +643,6 @@ Integer Integer::operator/(const Integer& other) const
   if (other.sign_ == NEGATIVE)
     divisor = divisor.substr(1);
 
-  long long result;
-  if (dividend.size() <= 18)
-  {
-    if (divisor.size() <= 18)
-    {
-      result = (std::stoll(dividend) / std::stoll(divisor));
-      return std::to_string(result);
-    }
-  }
-
   std::string timesin = "0";
   std::string counter = "0";
   std::string residuo = "0";
@@ -663,16 +653,23 @@ Integer Integer::operator/(const Integer& other) const
   sizeofstring = auxdividend = dividend.substr(0, divisor.length());
   dividend = dividend.substr(sizeofstring.size(), dividend.length());
 
-  while (dividend != "" || Parse(auxdividend) > Parse(divisor))
+  while (dividend != "/" || Parse(auxdividend) > Parse(divisor))
   {
     if (Parse(auxdividend) < Parse(divisor))
     {
       resultstring = resultstring + "0";
       auxdividend = auxdividend + dividend.substr(0, 1);
-      if (dividend.size() == 1 || dividend == "")
+      if (dividend.size() == 1)
+      {
         dividend = "";
+      }
       else
-        dividend = dividend.substr(1, dividend.size());
+      {
+        if (dividend == "")
+          dividend = "/";
+        else
+          dividend = dividend.substr(1, dividend.size());
+      }
     }
     else
     {
@@ -691,16 +688,21 @@ Integer Integer::operator/(const Integer& other) const
 
       resultstring = resultstring + counter;
       auxdividend = residuo + dividend.substr(0, 1);
-      if (dividend.size() == 1 || dividend == "")
+      if (dividend.size() == 1)
+      {
         dividend = "";
+      }
       else
-        dividend = dividend.substr(1, dividend.size());
+      {
+        if (dividend == "")
+          dividend = "/";
+        else
+          dividend = dividend.substr(1, dividend.size());
+      }
       timesin = "0";
       counter = "0";
     }
   }
-  if (auxdividend.size() > 0 && checkForCero(auxdividend))
-    resultstring = resultstring + "0";
 
   Integer result_aux(resultstring);
 

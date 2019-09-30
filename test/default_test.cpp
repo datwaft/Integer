@@ -1,59 +1,63 @@
 // default_test.cpp
 // Autores: David Guevara & Mario Arguello
-// Descripción: archivo de pruebas principal.
+// Descripción: archivo con las pruebas principales para la clase Integer.
 
 #include <iostream>
-#include "../src/basicinteger.h"
-#include "../src/arrayinteger.h"
 #include "../src/integer.h"
-
-using namespace std;
 
 int main()
 {
-  // ArrayInteger a1(string(ArrayInteger::getMaximumSize() * BasicInteger::DigitNumber(),'9'));
-  // BasicInteger a2(BasicInteger::MaximumNumberPlusOne() - 1);
-  // cout << "-- ArrayIntegers --" << endl;
-  // cout << a1.toString() << endl;
-  // cout << a2.toString() << endl;
-  // 
-  // ArrayInteger carriage;
-  // ArrayInteger result = a1.Multiplication(a1, &carriage);
+  Integer n1(std::string(300, '9'));
+  Integer n2(std::string(500, '7'));
 
-  // cout << endl << carriage.toString() << result.fullString() << endl;
-  
-  // BasicInteger a2(BasicInteger::MaximumNumberPlusOne() - 1);
-  // cout << "a2: " << endl << a2.toString() << endl << endl;
-  // cout << "complemento: " << endl << a2.Complement().fullString() << endl << endl;
-  // cout << "complemento+1: " << endl << a2.Complement().Addition(1).fullString() << endl << endl;
-  // ArrayInteger temp(string(ArrayInteger::getMaximumSize() * BasicInteger::DigitNumber(),'9'));
-  // cout << "temp: " << endl << temp.fullString() << endl << endl;
-  // cout << "complemento: " << endl << temp.Complement().fullString() << endl << endl;
-  // cout << "complemento+1: " << endl << temp.Complement().Addition(1).fullString() << endl << endl;
-  // Integer number(string(ArrayInteger::getMaximumSize() * BasicInteger::DigitNumber() * 3,'9'));
-  // cout << "number: " << endl << number << endl << endl;
-  // cout << "complemento: " << endl << number.Complement() << endl << endl;
-  // cout << "complemento+1: " << endl << number.Complement() + 1 << endl << endl;
+  std::cout << Integer(std::string(9, '9')) / Integer(std::string(4, '5')) << std::endl;
+    
+  std::cout << "9.9999e299: " << std::endl;
+  std::cout << n1 << std::endl;
+  std::cout << std::endl;
 
-  Integer n1(string(600, '9'));
-  Integer n2(string(350, '7'));
+  std::cout << "7.7777e499: " << std::endl;
+  std::cout << n2 << std::endl;
+  std::cout << std::endl;
 
-  cout << "n1: " << endl << n1 << endl << endl;
-  // cout << "complemento: " << endl << n1.Complement() << endl << endl;
-  // cout << "complemento+1: " << endl << n1.Complement(n2.getCurrentSize()) + 1 << endl << endl;
-  cout << "n2: " << endl << n2 << endl << endl;
-  // cout << "complemento: " << endl << n2.Complement() << endl << endl;
-  // cout << "complemento+1: " << endl << n2.Complement(n1.getCurrentSize()) + 1 << endl << endl;
-  cout << "n1 - n2: " << endl << n1 - n2 << endl << endl;
-  cout << "n2 - n1: " << endl << n2 - n1 << endl << endl;
-  cout << "n2 + n1: " << endl << n2 + n1 << endl << endl;
-   
-  Integer counter(0);
-  while (true)
-  {
-    cout << counter << endl;
-    counter += 1;
-  }
+  std::cout << "Test 1: 9.9999e299 * 7.7777e499" << std::endl;
+  std::cout << "Resultado: " << std::endl;
+  std::cout << n1 * n2 << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 2: 9.9999e299 + 7.7777e499" << std::endl;
+  std::cout << "Resultado: " << std::endl;
+  std::cout << n1 + n2 << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 3: 9.9999e299 - 7.7777e499" << std::endl;
+  std::cout << "Resultado: " << std::endl;
+  std::cout << n1 - n2 << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 4: 7.7777e499 / 9.9999e299" << std::endl;
+  std::cout << "Resultado: " << std::endl;
+  std::cout << n2 / n1 << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 5: 1000!" << std::endl;
+  std::cout << Integer::Factorial(1000) << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 6: Fibonacci(1000)" << std::endl;
+  std::cout << Integer::Fibonacci(1000) << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 7: Combinations(1000, 350) y Combinations(1000, 650)" << std::endl;
+  std::cout << "Nota: dura bastante haciendo todas las combinaciones." << std::endl;
+  Integer result = Integer::Combinations(1000, 350);
+  std::cout << (result == Integer::Combinations(1000, 650) ? "Son equivalentes." : "No son equivalentes.") << std::endl;
+  std::cout << result << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "Test 8: Combinations(1000, 500)" << std::endl;
+  std::cout << Integer::Combinations(1000, 500) << std::endl;
+  std::cout << std::endl;
 
   return EXIT_SUCCESS;
 }
