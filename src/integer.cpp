@@ -627,91 +627,20 @@ Integer Integer::operator*(const Integer& other) const
   return result_aux;
 }
 
-Integer Integer::operator/(const Integer& other) const
+Integer Integer::operator/(const Integer& divisor) const
 {
-  if (other > * this)
-    return 0;
-  bool flag = false;
+  Integer quotient;
+  Integer remainder;
+  Division(divisor, &quotient, &remainder);
+  return quotient;
+}
 
-  if (other == 0)
-    throw std::exception("Division by 0");
-
-  std::string dividend = this->toString();
-  if (this->sign_ == NEGATIVE)
-    dividend = dividend.substr(1);
-  std::string divisor = other.toString();
-  if (other.sign_ == NEGATIVE)
-    divisor = divisor.substr(1);
-
-  std::string timesin = "0";
-  std::string counter = "0";
-  std::string residuo = "0";
-  std::string resultstring = "";
-  std::string auxdividend = "0";
-  std::string sizeofstring = "0";
-
-  sizeofstring = auxdividend = dividend.substr(0, divisor.length());
-  dividend = dividend.substr(sizeofstring.size(), dividend.length());
-
-  while (dividend != "/" || Parse(auxdividend) > Parse(divisor))
-  {
-    if (Parse(auxdividend) < Parse(divisor))
-    {
-      resultstring = resultstring + "0";
-      auxdividend = auxdividend + dividend.substr(0, 1);
-      if (dividend.size() == 1)
-      {
-        dividend = "";
-      }
-      else
-      {
-        if (dividend == "")
-          dividend = "/";
-        else
-          dividend = dividend.substr(1, dividend.size());
-      }
-    }
-    else
-    {
-      while (Parse(timesin) < Parse(auxdividend))
-      {
-        timesin = (Parse(timesin) + Parse(divisor)).toString();
-        counter = (Parse(counter) + 1).toString();
-        residuo = "";
-      }
-      if (Parse(timesin) > Parse(auxdividend)) 
-      {
-        timesin = (Parse(timesin) - Parse(divisor)).toString();
-        counter = (Parse(counter) - 1).toString();
-        residuo = (Parse(auxdividend) - Parse(timesin)).toString(); 
-      }
-
-      resultstring = resultstring + counter;
-      auxdividend = residuo + dividend.substr(0, 1);
-      if (dividend.size() == 1)
-      {
-        dividend = "";
-      }
-      else
-      {
-        if (dividend == "")
-          dividend = "/";
-        else
-          dividend = dividend.substr(1, dividend.size());
-      }
-      timesin = "0";
-      counter = "0";
-    }
-  }
-
-  Integer result_aux(resultstring);
-
-  if (this->sign_ != NEGATIVE && other.sign_ == NEGATIVE)
-    result_aux.sign_ = NEGATIVE;
-  else if (this->sign_ == NEGATIVE && other.sign_ != NEGATIVE)
-    result_aux.sign_ = NEGATIVE;
-
-  return result_aux;
+Integer Integer::operator%(const Integer& divisor) const
+{
+  Integer quotient;
+  Integer remainder;
+  Division(divisor, &quotient, &remainder);
+  return remainder;
 }
 
 std::string Integer::toString() const
@@ -767,6 +696,86 @@ Integer Integer::Fibonacci(Integer number)
 Integer Integer::Combinations(Integer n, Integer k)
 {
   return Factorial(n)/(Factorial(k)*Factorial(n - k));
+}
+
+void Integer::Division(const Integer& other, Integer* out_quotient, Integer* out_remainder) const
+{
+  if (other == 0)
+    throw std::exception("Division by 0");
+  Integer divisor = other;
+  divisor.sign_ = POSITIVE;
+  if (*this < divisor)
+  {
+    *out_quotient = 0;
+    *out_remainder = *this;
+    if (*this == 0)
+      out_remainder->sign_ = NEUTRAL;
+    else
+      out_remainder->sign_ = POSITIVE;
+    return;
+  }
+  if (this->getDigits() <= 19 && divisor.getDigits() <= 19)
+  {
+    unsigned long long dividend_aux = std::stoll(this->toString());
+    unsigned long long divisor_aux = std::stoll(divisor.toString());
+    *out_quotient = std::to_string(dividend_aux / divisor_aux);
+    *out_remainder = std::to_string(dividend_aux % divisor_aux);
+
+    if (this->sign_ != NEGATIVE && divisor.sign_ == NEGATIVE)
+      out_quotient->sign_ = NEGATIVE;
+    else if (this->sign_ == NEGATIVE && divisor.sign_ != NEGATIVE)
+      out_quotient->sign_ = NEGATIVE;
+    return;
+  }
+  if (this->getDigits() == divisor.getDigits() || this->getDigits() == divisor.getDigits() + 1)
+  {
+    Integer aux;
+    Integer quotient;
+    while (aux < *this)
+    {
+      aux += divisor;
+      quotient += 1;
+    }
+    *out_quotient = quotient - 1;
+    *out_remainder = aux - divisor - *this;
+    if(out_remainder != 0)
+      out_remainder->sign_ = POSITIVE;
+    if (this->sign_ != NEGATIVE && divisor.sign_ == NEGATIVE)
+      out_quotient->sign_ = NEGATIVE;
+    else if (this->sign_ == NEGATIVE && divisor.sign_ != NEGATIVE)
+      out_quotient->sign_ = NEGATIVE;
+    return;
+  }
+  std::string quotient;
+  std::string aux = this->toString();
+  if (this->sign_ == NEGATIVE)
+    aux = aux.substr(1);
+
+  Integer dividend;
+  Integer remainder;
+  Integer aux_quotient;
+  while (!aux.empty() && aux != "0")
+  {
+    dividend = aux.substr(0, divisor.getDigits());
+    if (dividend < divisor)
+      dividend = aux.substr(0, divisor.getDigits() + 1);
+    aux = aux.substr(dividend.getDigits());
+    dividend.Division(divisor, &aux_quotient, &remainder);
+
+    if(remainder != 0 && !aux.empty())
+      aux = remainder.toString() + aux;
+    quotient += aux_quotient.toString();
+  }
+
+  Integer result_aux(quotient);
+
+  if (this->sign_ != NEGATIVE && divisor.sign_ == NEGATIVE)
+    result_aux.sign_ = NEGATIVE;
+  else if (this->sign_ == NEGATIVE && divisor.sign_ != NEGATIVE)
+    result_aux.sign_ = NEGATIVE;
+
+  *out_quotient = result_aux;
+  *out_remainder = remainder;
 }
 
 Integer::Integer(NodeInteger* node, Sign sign)

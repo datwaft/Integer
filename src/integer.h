@@ -60,6 +60,7 @@ public:
   Integer operator - (const Integer&) const;
   Integer operator * (const Integer&) const;
   Integer operator / (const Integer&) const;
+  Integer operator % (const Integer&) const;
   friend std::ostream& operator<<(std::ostream&, const Integer&);
   Integer Complement() const;
   Integer Complement(int) const;
@@ -69,6 +70,7 @@ public:
   static Integer Fibonacci(Integer);
   static Integer Combinations(Integer, Integer);
 private:
+  void Division(const Integer&, Integer*, Integer*) const;
   Integer(NodeInteger*, Sign = POSITIVE);
   void Clear();
   void Clear(NodeInteger*);
