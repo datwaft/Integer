@@ -695,7 +695,20 @@ Integer Integer::Fibonacci(Integer number)
 
 Integer Integer::Combinations(Integer n, Integer k)
 {
-  return Factorial(n)/(Factorial(k)*Factorial(n - k));
+  Integer res = 1;
+
+  if (k > n - k)
+    k = n - k;
+
+  for (Integer i = 0; i < k; i += 1)
+  {
+    res *= (n - i);
+    res /= (i + 1);
+    std::cout << res << std::endl;
+    std::cout << i << std::endl << std::endl;
+  }
+
+  return res;
 }
 
 void Integer::Division(const Integer& other, Integer* out_quotient, Integer* out_remainder) const
@@ -756,9 +769,16 @@ void Integer::Division(const Integer& other, Integer* out_quotient, Integer* out
   Integer aux_quotient;
   while (!aux.empty() && aux != "0")
   {
-    dividend = aux.substr(0, divisor.getDigits());
-    if (dividend < divisor)
-      dividend = aux.substr(0, divisor.getDigits() + 1);
+    if (divisor.getDigits() >= 19)
+    {
+      dividend = aux.substr(0, divisor.getDigits());
+      if (dividend < divisor)
+        dividend = aux.substr(0, divisor.getDigits() + 1);
+    }
+    else
+    {
+      dividend = aux.substr(0, 19);
+    }
     aux = aux.substr(dividend.getDigits());
     dividend.Division(divisor, &aux_quotient, &remainder);
 
